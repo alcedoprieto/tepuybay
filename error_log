@@ -1,0 +1,1 @@
+[18-Jul-2020 18:56:04 UTC] PHP Warning:  session_destroy(): Trying to destroy uninitialized session in /home/prietslt/public_html/tepuybay/tepuy/logout.php on line 3
