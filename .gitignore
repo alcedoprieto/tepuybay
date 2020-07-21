@@ -1,0 +1,13 @@
+# Proyecto en Sublime Text
+form-virket.sublime-project
+form-virket.sublime-workspace
+
+# Ignorando archivos BASH
+*.sh
+
+# Ignorando archivos de log
+error_log
+*.log
+
+
+
