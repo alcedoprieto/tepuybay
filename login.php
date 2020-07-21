@@ -1,25 +1,34 @@
 <?php
     error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_WARNING & ~E_NOTICE);
     date_default_timezone_set("America/Caracas");
-    session_start();
-    include ('conexion.php');
+    
+    require_once ('conexion.php');
+    require_once('lib/PasswordHash.php');
+    
     $user_email = $_POST['user_email'];
     $user_pass = $_POST['user_pass'];
     $user_login = $_POST['user_login'];
     $ID = $_POST['ID'];
     if ($_POST['boton'] != "") {  
-    $sql = "SELECT * FROM wpzz_users WHERE user_email='$user_email' AND user_pass=md5('$user_pass')";
+
+    $sql = "SELECT * FROM wpzz_users WHERE user_email='$user_email'";
     $busqueda = $obj_conexion -> query($sql);
-    if($registro=mysqli_fetch_array($busqueda)){
+    $registro=mysqli_fetch_array($busqueda);
+    mysqli_close($obj_conexion);
+
+
+    $wp_hasher = new PasswordHash( 8, true );
+
+
+    if($wp_hasher->CheckPassword($user_pass, $registro["user_pass"])){
+        session_start();
         $_SESSION['user_email'] = trim($registro["user_email"]);
         $_SESSION['user_status'] = trim($registro["user_status"]);
         $_SESSION['user_pass'] = trim($registro["user_pass"]);
         $_SESSION['user_login'] = trim($registro["user_login"]);
         $_SESSION['ID'] = trim($registro["ID"]);
         $_SESSION['user_registered'] = trim($registro["user_registered"]);
-        echo "<script>window.location='index.php'</script>;";
-  
-      echo "<script>window.location='index.php'</script>"; 
+        header('Location: index.php');
            }
         else { echo "<script>alert('Datos Errados');</script>;"; }
     }

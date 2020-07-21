@@ -4,7 +4,7 @@
   $usuario="prietslt_wp675";
   $contrase«Ğa="p4(S346Sz!";
   $basedatos="prietslt_wp675";
-  $servidor="localhost";
+  $servidor="208.91.199.146";
   $obj_conexion = mysqli_connect($servidor,$usuario,$contrase«Ğa,$basedatos);
   
   if ($obj_conexion) {
