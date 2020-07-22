@@ -275,8 +275,3 @@ class PasswordHash {
 		return $hash === $stored_hash;
 	}
 }
-
-$password = '16199224';
-
-$wp_hasher = new PasswordHash( 8, true );
-echo $wp_hasher->HashPassword( trim( $password ) );

@@ -1,12 +1,12 @@
 <?PHP 
-  error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_WARNING & ~E_NOTICE);
-  date_default_timezone_set("America/Caracas");
+  //error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_WARNING & ~E_NOTICE);
+  //date_default_timezone_set("America/Caracas");
 
     session_start();
     if (!isset($_SESSION['user_email'])) {
         header('Location: login.php');
     }
-    include('conexion.php');
+    require_once ('conexion.php');
     $mruser = $_SESSION['user_login'];
     $mrmail = $_SESSION['user_email'];
     $mrlevel = $_SESSION['user_status'];

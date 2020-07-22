@@ -1,7 +1,7 @@
 <?php
-    error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_WARNING & ~E_NOTICE);
-    date_default_timezone_set("America/Caracas");
-    
+    //error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_WARNING & ~E_NOTICE);
+    //date_default_timezone_set("America/Caracas");
+    session_start();
     require_once ('conexion.php');
     require_once('lib/PasswordHash.php');
     
@@ -21,7 +21,7 @@
 
 
     if($wp_hasher->CheckPassword($user_pass, $registro["user_pass"])){
-        session_start();
+        
         $_SESSION['user_email'] = trim($registro["user_email"]);
         $_SESSION['user_status'] = trim($registro["user_status"]);
         $_SESSION['user_pass'] = trim($registro["user_pass"]);
