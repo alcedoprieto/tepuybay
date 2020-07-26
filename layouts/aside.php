@@ -1,14 +1,14 @@
         <aside class="menu-sidebar d-none d-lg-block">
             <div class="logo">
                 <a href="#">
-                    <img src="images/icon/logo.png" alt="Cool Admin" />
+                    <img src="../images/icon/logo.png" alt="Cool Admin" />
                 </a>
             </div>
             <div class="menu-sidebar__content js-scrollbar1">
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
                         <li class="active has-sub">
-                            <a class="js-arrow" href="index.php">
+                            <a class="js-arrow" href="../index.php">
                                 <i class="fas fa-tachometer-alt"></i>Tepuy Shop</a>                                
                         </li>
                         <li class="has-sub">
@@ -16,30 +16,30 @@
                                 <i class="fas fa-copy"></i>Editar Datos</a>
                             <ul class="list-unstyled navbar__sub-list js-sub-list">
                                 <li>
-                                    <a href="editar_contrase«Ða.php">Contrase«Ða</a>
+                                    <a href="../editar_contrase«Ða.php">Contrase«Ða</a>
                                 </li>
                                 <li>
-                                    <a href="editar_datos.php">Datos de Usuario</a>
+                                    <a href="../editar_datos.php">Datos de Usuario</a>
                                 </li>
                             </ul>
                         </li>
                         <li>
-                            <a href="#">
+                            <a href="../#">
                                 <i class="fas fa-calendar-alt"></i>Tickets</a>
                         </li>
                         <li>
-                            <a href="seguimiento.php">
+                            <a href="../seguimiento.php">
                                 <i class="fas fa-calendar-alt"></i>Pedido</a>
                         </li>
                         <li>
-                            <a data-toggle="collapse" href="#pagesExamples" class="collapsed" aria-expanded="false">
+                            <a data-toggle="collapse" href="../#pagesExamples" class="collapsed" aria-expanded="false">
                                 <i class="now-ui-icons design_image"></i>
                                   Articulos <b class="caret"></b>
                             </a>
                             <div id="pagesExamples" style="" class="collapse">
                                 <ul class="list-unstyled navbar__list">
                                     <li>
-                                      <a href="articulos/list.php">
+                                      <a href="../articulos/list.php">
                                           <span class="sidebar-normal"> Listar </span>
                                       </a>
                                     </li>
@@ -62,7 +62,7 @@
                             </div>                 
                         </li>
                         <li>
-                            <a href="logout.php">
+                            <a href="../logout.php">
                                 <i class="fas fa-map-marker-alt"></i>Salir</a> 
                         </li>
                     </ul>
