@@ -95,23 +95,11 @@
                                                     <div class="au-message__item-inner">
                                                         <div class="au-message__item-text">
                                                             <div class="avatar-wrap">
-                                                                <div class="avatar">
-                                                                    <img src="images/icon/avatar-02.jpg" alt="John Smith">
-                                                                </div>
+                        
                                                             </div>
-                                                            <div class="text">
-                                                                <h5 class="name">Resumen de Cuenta</h5>
-                                                                <p>Usuario: <?php echo $mruser; ?></p>
-                                                                <p>ID: <?php echo $mrid; ?></p>
-                                                                <p>Correo Electronico: <?php echo $mrmail; ?></p>
-                                                                <p>Perfil de Usuario: <?php echo $mrlevel; ?></p>
-                                                                <p>Registrado desde: <?php echo $mrreg; ?></p>
-                                                                <p>Nombre: <?php echo $first_name; ?></p>
-                                                                <p>Apellido: <?php echo $last_name; ?></p>
-                                                                <p>Ciudad: <?php echo $city; ?> <?php echo $country; ?></p>
-                                                            </div>
+
                                                             <div class="col-md-12">
-                                                                <small>Resumén de Productos Comprados(s)</small>
+                                                        
                                                                 <?php
 
                                                                 
@@ -148,16 +136,20 @@
                                                                             $nombrepro	 = $strDatos4['post_title'];  
                                                                             $date_created = $row["date_created"];  
                                                                             $product_qty = $row["product_qty"];  
-                                                                            $product_net_revenue = $row["product_net_revenue"];  
+                                                                            $product_net_revenue = $row["product_net_revenue"]; 
+                                                                            $strQuery5= "SELECT * FROM wp_report_tepuy WHERE tepuy_id = '$order_item_id'";
+                                                                            $strResultado5 = $obj_conexion->query($strQuery5);
+                                                                            $strDatos5 = mysqli_fetch_array($strResultado5);
+                                                                            $status_id	 = $strDatos5['status_id']; 
                                                                         ?>
                                                                         <tr>
-                                                                        <td class=""><a href="seguimiento.php?tepuy_id=<?php echo $row["order_item_id"]; ?>"><?php echo $row["order_item_id"]; ?></a></td>
+                                                                        <td class=""><a href="guia.php?tepuy_id=<?php echo $row["order_item_id"]; ?>"><?php echo $row["order_item_id"]; ?></a></td>
                                                                         <td class=""><?php echo $row["product_id"]; ?></td>
                                                                         <td class=""><?php echo $nombrepro; ?></td>
                                                                         <td class=""><?php echo $row["date_created"]; ?></td>
                                                                         <td class=""><?php echo $row["product_qty"]; ?></td>     
                                                                         <td class=""><?php echo $row["product_net_revenue"]; ?></td>
-                                                                        <td class="">En Proceso</td>
+                                                                        <td class=""><?php echo $status_id; ?></td>
                                                                         </tr>
                                                                         <?php
                                                                         }

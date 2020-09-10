@@ -16,7 +16,7 @@
                                 <i class="fas fa-copy"></i>Editar Datos</a>
                             <ul class="list-unstyled navbar__sub-list js-sub-list">
                                 <li>
-                                    <a href="editar_contrase«Ða.php">Contrase«Ða</a>
+                                    <a href="editar_contraseÃ±a.php">ContraseÃ±a</a>
                                 </li>
                                 <li>
                                     <a href="editar_datos.php">Datos de Usuario</a>
@@ -24,42 +24,26 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="#">
-                                <i class="fas fa-calendar-alt"></i>Tickets</a>
+                            <a href="table.html">
+                                <i class="fas fa-table"></i>Productos</a>
                         </li>
                         <li>
-                            <a href="seguimiento.php">
-                                <i class="fas fa-calendar-alt"></i>Pedido</a>
+                            <a href="form.html">
+                                <i class="far fa-check-square"></i>Seguimiento de Pedidos</a>
                         </li>
                         <li>
-                            <a data-toggle="collapse" href="#pagesExamples" class="collapsed" aria-expanded="false">
-                                <i class="now-ui-icons design_image"></i>
-                                  Articulos <b class="caret"></b>
-                            </a>
-                            <div id="pagesExamples" style="" class="collapse">
-                                <ul class="list-unstyled navbar__list">
-                                    <li>
-                                      <a href="articulos/list.php">
-                                          <span class="sidebar-normal"> Listar </span>
-                                      </a>
-                                    </li>
-                                    <li>
-                                      <a href="#">
-                                          <span class="sidebar-normal"> Carga Individual </span>
-                                      </a>
-                                    </li>
-                                    <li>
-                                      <a href="#">
-                                          <span class="sidebar-normal"> Carga Masiva </span>
-                                      </a>
-                                    </li>
-                                    <li>
-                                      <a href="#">
-                                          <span class="sidebar-normal"> Imagenes </span>
-                                      </a>
-                                    </li>
-                                </ul>
-                            </div>                 
+                            <a href="calendar.html">
+                                <i class="fas fa-calendar-alt"></i>Reclamos</a>
+                        </li>
+                        <li class="has-sub">
+                            <a class="js-arrow" href="#">
+                                <i class="fas fa-copy"></i>Vendedores</a>
+                            <ul class="list-unstyled navbar__sub-list js-sub-list">
+                                <li>
+                                    <a href="listado_productos.php">Listados</a>
+                                </li>
+                               
+                            </ul>
                         </li>
                         <li>
                             <a href="logout.php">

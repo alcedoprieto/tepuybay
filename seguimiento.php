@@ -2,26 +2,43 @@
   error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_WARNING & ~E_NOTICE);
   date_default_timezone_set("America/Caracas");
 
-    session_start();
-    if (!isset($_SESSION['user_email'])) {
-        header('Location: login.php');
-    }
+  
     include('conexion.php');
-    $mruser = $_SESSION['user_login'];
-    $mrmail = $_SESSION['user_email'];
-    $mrlevel = $_SESSION['user_status'];
-    $mrreg = $_SESSION['user_registered'];
-    $mrid= $_SESSION['ID'];
+    $tepuy_id = $_GET['tepuy_id'];
+    $banco_transfer = $_GET['banco_transfer'];
+    $banco_nombre = $_GET['banco_nombre'];
+    $banco_fecha = $_GET['banco_fecha'];
+    $product_net_revenue = $_GET['product_net_revenue'];
+    $boton=$_GET["boton"];
 
-    $sql = "SELECT * FROM wp_wc_customer_lookup WHERE user_id ='$mrid' ";
+    $sql = "SELECT * FROM wpzz_wc_order_product_lookup WHERE order_item_id = '$tepuy_id' ";
     $busqueda = $obj_conexion -> query($sql);
     if($registro=mysqli_fetch_array($busqueda)){
-      $first_name = $registro['first_name'];
-      $last_name = $registro['last_name'];
-      $customer_id = $registro['customer_id'];
-      $city = $registro['city'];
-      $country = $registro['country'];
+      $date_created = $registro['date_created'];
+      $product_id = $registro['product_id'];
+      $product_qty = $registro['product_qty'];
+      $product_net_revenue = $registro['product_net_revenue'];
     }
+        $sql1 = "SELECT * FROM wpzz_posts WHERE id = '$product_id'";
+        $busqueda1 = $obj_conexion -> query($sql1);
+        if($registro1=mysqli_fetch_array($busqueda1)){
+        $post_title = $registro1['post_title'];
+        }
+    if($boton=="Guardar"){
+        $consulta="INSERT INTO wp_report_tepuy (tepuy_id, product_name, product_id, product_date, banco_nombre, banco_transfer, banco_fecha, status_id, banco_monto) 
+        VALUES ('$tepuy_id', '$post_title', '$product_id', '$date_created', '$banco_nombre', '$banco_transfer', '$banco_fecha', 'En Proceso', '$product_net_revenue')";
+        $resultado = $obj_conexion -> query($consulta)|| die("Ya se Registro el Envio de la Transferencia");
+        if($resultado)
+        {
+            echo "<script>alert('Guardado Exitoso');</script>";
+        }
+        else
+        {
+            echo "<script>alert('Datos Errados');</script>";
+        }
+    }
+
+
 
 ?>
 <!DOCTYPE html>
@@ -82,16 +99,16 @@
             <div class="main-content">
                 <div class="section__content section__content--p30">
                   <div class="container-fluid">
-                    <h5 class="heading-title">Pedido #2423422 Pastilla de frenos</h5>
+                    <h5 class="heading-title">Nro de Pedido <?php echo $tepuy_id; ?> </h5>
                     <div class="row" style="padding-left: 30px;border-left: 8px solid #585448;margin-left: 75px;">
                       <div class="col">
                         <section >
-                          <div class="card-body text-secondary"><span style="margin-top: -10px; top: 50%; left: -158px;font-size: 0.95em;line-height: 20px;position: absolute;">12 May 2013</span>
+                          <div class="card-body text-secondary"><span style="margin-top: -10px; top: 50%; left: -158px;font-size: 0.95em;line-height: 20px;position: absolute;"><?php echo $date_created; ?></span>
                             <span style="margin-top: -10px;top: 50%;left: -58px;width: 20px;height: 20px;background: #343a40;border: 5px solid #fff;border-radius: 50%;display: block;position: absolute;">
                                 
                             </span><div class="card">
                                     <div class="card-header"><h3>Pedido realizado</h3></div>
-                                    <div class="card-body">Datos del pedido:
+                                    <div class="card-body">Datos del pedido: <?php echo $product_id; ?>  <?php echo $post_title; ?>
                                             <div>
                                                 <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block" data-toggle="modal" data-target="#largeModal">
                                                     <i class="fa fa-check-square"></i>&nbsp;
@@ -117,55 +134,50 @@
                                             <h3 class="text-center title-2">Llena todos los campos</h3>
                                         </div>
                                         <hr>
-                                        <form action="" method="post" novalidate="novalidate">
+                                        <form action="" method="get" novalidate="novalidate">
+                                        <div class="form-group">
+                                                <label for="cc-payment" class="control-label mb-1">Id de Producto</label>
+                                                <input id="cc-pament" name="tepuy_id" type="text" class="form-control" aria-required="true" aria-invalid="false" value="<?php echo $tepuy_id; ?>" readonly>
+                                            </div>
                                             <div class="form-group">
-                                                <label for="cc-payment" class="control-label mb-1">Payment amount</label>
-                                                <input id="cc-pament" name="cc-payment" type="text" class="form-control" aria-required="true" aria-invalid="false" value="100.00">
+                                                <label for="cc-payment" class="control-label mb-1">Monto de Transferencia</label>
+                                                <input id="cc-pament" name="product_net_revenue" type="text" class="form-control" aria-required="true" aria-invalid="false" value="<?php echo $product_net_revenue; ?>" readonly>
                                             </div>
                                             <div class="form-group has-success">
-                                                <label for="cc-name" class="control-label mb-1">Name on card</label>
-                                                <input id="cc-name" name="cc-name" type="text" class="form-control cc-name valid" data-val="true" data-val-required="Please enter the name on card"
-                                                    autocomplete="cc-name" aria-required="true" aria-invalid="false" aria-describedby="cc-name-error">
-                                                <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+                                                <label for="cc-name" class="control-label mb-1">Nombre del Banco</label>
+                                                <select class="form-control cc-name valid" name="banco_nombre" >
+                                                    <option value="Seleccione Banco">Seleccione Banco</option>
+                                                    <option value="Provincial">Provincial</option>
+                                                    <option value="Mercantil">Mercantil</option>
+                                                </select>
                                             </div>
                                             <div class="form-group">
-                                                <label for="cc-number" class="control-label mb-1">Card number</label>
-                                                <input id="cc-number" name="cc-number" type="tel" class="form-control cc-number identified visa" value="" data-val="true"
+                                                <label for="cc-number" class="control-label mb-1">Numero de Transferencia</label>
+                                                <input id="cc-number" name="banco_transfer" type="tel" class="form-control cc-number identified visa"  value="<?php echo $banco_transfer; ?>" data-val="true"
                                                     data-val-required="Please enter the card number" data-val-cc-number="Please enter a valid card number"
                                                     autocomplete="cc-number">
                                                 <span class="help-block" data-valmsg-for="cc-number" data-valmsg-replace="true"></span>
                                             </div>
                                             <div class="row">
-                                                <div class="col-6">
+                                                <div class="col-12">
                                                     <div class="form-group">
-                                                        <label for="cc-exp" class="control-label mb-1">Expiration</label>
-                                                        <input id="cc-exp" name="cc-exp" type="tel" class="form-control cc-exp" value="" data-val="true" data-val-required="Please enter the card expiration"
+                                                        <label for="cc-exp" class="control-label mb-1">Fecha de Transferencia</label>
+                                                        <input id="cc-exp" name="banco_fecha" type="date" class="form-control cc-exp" value="" data-val="true" data-val-required="Please enter the card expiration"
                                                             data-val-cc-exp="Please enter a valid month and year" placeholder="MM / YY"
                                                             autocomplete="cc-exp">
                                                         <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
                                                     </div>
                                                 </div>
-                                                <div class="col-6">
-                                                    <label for="x_card_code" class="control-label mb-1">Security code</label>
-                                                    <div class="input-group">
-                                                        <input id="x_card_code" name="x_card_code" type="tel" class="form-control cc-cvc" value="" data-val="true" data-val-required="Please enter the security code"
-                                                            data-val-cc-cvc="Please enter a valid security code" autocomplete="off">
 
-                                                    </div>
-                                                </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col">
-                                                <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
-                                                    <i class="fa fa-share-square"></i>&nbsp;
-                                                    <span id="payment-button-amount">Enviar</span>
-                                                   
-                                                </button>
+                                                <input type="submit" value="Guardar" name="boton" class="btn btn-lg btn-info btn-block"> 
                                                 </div>
                                                 <div class="col">
                                                 <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block"data-toggle="modal" data-target="#mediumModal">
-                                                    <i class="fa fa-share-square"></i>&nbsp;
-                                                    <span id="payment-button-amount">Enviar</span>
+                                                    <i class="fa fa-check-square"></i>&nbsp;
+                                                    <span id="payment-button-amount">Siguiente Paso</span>
                                                    
                                                 </button>
                                                 </div>
@@ -187,7 +199,30 @@
                             </span><div class="card">
                                     <div class="card-header"><h3>Datos del Envio</h3></div>
                                     <div class="card-body">
-                                        
+                                    <form action="" method="get" novalidate="novalidate">
+                                            <div class="form-group">
+                                                <label for="cc-number" class="control-label mb-1">Numero de Guia</label>
+                                                <input id="cc-number" name="seguimiento_id" type="tel" class="form-control cc-number identified visa" 
+                                                    autocomplete="cc-number" readonly>
+                                                <span class="help-block" data-valmsg-for="cc-number" data-valmsg-replace="true"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="cc-number" class="control-label mb-1">Status</label>
+                                                <input id="cc-number" name="status_id" type="tel" class="form-control cc-number identified visa" 
+                                                    autocomplete="cc-number" readonly>
+                                                <span class="help-block" data-valmsg-for="cc-number" data-valmsg-replace="true"></span>
+                                            </div>
+                                            <div class="row">
+
+                                                <div class="col">
+                                                <input type="submit" value="Enviar" name="boton" class="btn btn-lg btn-info btn-block"> 
+                                                    <i class="fa fa-check-square"></i>&nbsp;
+                                                    <span id="payment-button-amount">Siguiente Paso</span>
+                                                   
+                                                </button>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
 
