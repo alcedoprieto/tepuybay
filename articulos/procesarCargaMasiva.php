@@ -1,7 +1,5 @@
 <?php
 
-
-
 if (isset($_FILES['excel_file']) && $_FILES['excel_file']['error'] === UPLOAD_ERR_OK) {
     $fileTmpPath = $_FILES['excel_file']['tmp_name'];
     $fileName = $_FILES['excel_file']['name'];
@@ -63,34 +61,12 @@ if (isset($_FILES['excel_file']) && $_FILES['excel_file']['error'] === UPLOAD_ER
             echo ("</tr>");
         }
         echo("</table>");
-
-        //Usando libreria lib/Excel (pero solo lee xls)
-        /*
-        require_once '../lib/Excel/reader.php';
-        $data = new Spreadsheet_Excel_Reader();
-        $data->setOutputEncoding('CP1251');
-        $data->read($uploadFileDir.$newFileName);
-        
-        echo("<table>");
-        for ($i = 1; $i <= $data->sheets[0]['numRows']; $i++) {
-            echo("<tr>");
-            for ($j = 1; $j <= $data->sheets[0]['numCols']; $j++) {
-                echo("<td>".$data->sheets[0]['cells'][$i][$j] ."</td>");
-            }
-            echo("</tr>"); 
-        }
-        echo("</table>");
-        */
     }
     else
     {
-    $message = 'There was some error moving the file to upload directory. Please make sure the upload directory is writable by web server.';
+        echo 'There was some error moving the file to upload directory. Please make sure the upload directory is writable by web server.';
     }
 
-   /*
-    $file = $_FILES['excel_file']['tmp_name'];
-    
-    */
 } else {
     echo "No se recibió archivo";
 }
