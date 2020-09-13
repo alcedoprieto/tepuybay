@@ -30,8 +30,7 @@ include("../layouts/topLayout.php");
                                                 </div>
                                         </div>
                                         <div class="row">
-                                        <input type="submit" name="Upload" value="Upload" />
-                                        <button type="button" class="btn btn-primary">Enviar</button>
+                                        <input type="submit" name="Upload" value="Enviar" class="btn btn-primary" />
                                         </div>
                                     </div>
                                 </div>
