@@ -108,7 +108,7 @@
                                 
                             </span><div class="card">
                                     <div class="card-header"><h3>Pedido realizado</h3></div>
-                                    <div class="card-body">Datos del pedido: <?php echo $product_id; ?>  <?php echo $post_title; ?>
+                                    <div class="card-body"><h5>Datos del pedido:</h5> <?php echo $product_id; ?>  <?php echo $post_title; ?>
                                             <div>
                                                 <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block" data-toggle="modal" data-target="#largeModal">
                                                     <i class="fa fa-check-square"></i>&nbsp;
@@ -175,9 +175,9 @@
                                                 <input type="submit" value="Guardar" name="boton" class="btn btn-lg btn-info btn-block"> 
                                                 </div>
                                                 <div class="col">
-                                                <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block"data-toggle="modal" data-target="#mediumModal">
+                                                <button type="button" class="btn btn-lg btn-info btn-block" data-toggle="modal" data-target="#mediumModal">
                                                     <i class="fa fa-check-square"></i>&nbsp;
-                                                    <span id="payment-button-amount">Siguiente Paso</span>
+                                                    <span id="payment-button-amount">Siguiente paso</span>
                                                    
                                                 </button>
                                                 </div>
@@ -246,22 +246,19 @@
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="mediumModalLabel">Medium Modal</h5>
+                            <h5 class="modal-title" id="mediumModalLabel">Ultimo paso</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
                             <p>
-                                There are three species of zebras: the plains zebra, the mountain zebra and the Grévy's zebra. The plains zebra and the mountain
-                                zebra belong to the subgenus Hippotigris, but Grévy's zebra is the sole species of subgenus Dolichohippus. The latter
-                                resembles an ass, to which it is closely related, while the former two are more horse-like. All three belong to the
-                                genus Equus, along with other living equids.
+                                Si ya enviaste tus datos de tranferencias haz culminado todo el proceso de compra.
+                                A continuación tu información sera verificada y podras visualizar los datos de envio y link de seguimiento. 
                             </p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-primary">Confirm</button>
+                            <h5>Si tienes dudas o problemas, enviamos un ticket y te asesoraremos</h5>
                         </div>
                     </div>
                 </div>

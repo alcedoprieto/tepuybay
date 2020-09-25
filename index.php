@@ -27,9 +27,9 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+<head><meta charset="gb18030">
     <!-- Required meta tags-->
-    <meta charset="UTF-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="au theme template">
     <meta name="author" content="Hau Nguyen">
@@ -96,10 +96,13 @@
                                                         <div class="au-message__item-text">
                                                             <div class="avatar-wrap">
                                                                 <div class="avatar">
-                                                                    <img src="images/icon/avatar-02.jpg" alt="John Smith">
+                                                                    <img src="images/icon/logo_lit.png" alt="John Smith">
                                                                 </div>
                                                             </div>
-                                                            <div class="text">
+                                                            
+                                                            <div class="row">
+                                                                
+                                                            <div class="text col-md-6">
                                                                 <h5 class="name">Resumen de Cuenta</h5>
                                                                 <p>Usuario: <?php echo $mruser; ?></p>
                                                                 <p>ID: <?php echo $mrid; ?></p>
@@ -110,6 +113,121 @@
                                                                 <p>Apellido: <?php echo $last_name; ?></p>
                                                                 <p>Ciudad: <?php echo $city; ?> <?php echo $country; ?></p>
                                                             </div>
+                                                             <div class="col-md-4">
+                                                                 <div class="card">
+                                                                     <div class="card-header">
+                                                                        <strong class="card-title">Mas información</strong>
+                                                                    </div>
+                                                                <div class="card-body">
+                                                                        <p class="card-text">
+                                                                        Para cargar los datos de tu transferencia y hacerle seguimiento a tu pedido, ingresa al ID de compra en la tabla.
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div></div>
+                                                            
+                                                            <div class="col-md-12">
+                                                                <small>Resumén de Productos Comprados(s)</small>
+                                                                <?php
+
+                                                                
+                                                                    include('conexion.php');
+
+                                                                    $query = "SELECT * FROM wpzz_wc_order_product_lookup WHERE customer_id ='$customer_id'";
+                                                                    $result = mysqli_query($obj_conexion, $query);
+
+                                                                    ?>
+
+                                                                    <div class="table-responsive">
+                                                                        <table class="table table-top-campaign">
+                                                                        <thead>
+                                                                        <tr>
+                                                                            <th>Id de Compra</th>
+                                                                            <th>Codigo Producto</th>
+                                                                            <th>Nombre Producto</th>
+                                                                            <th>Fecha de Compra</th>
+                                                                            <th>Cantidad Comprada</th>
+                                                                            <th>Precio</th>    
+                                                                            <th>Status</th>                                                              
+                                                                        </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        <?php
+                                                                        
+                                                                        while($row = mysqli_fetch_array($result))
+                                                                        {
+                                                                            $order_item_id  = $row["order_item_id"];  
+                                                                            $product_id = $row["product_id"];  
+                                                                            $strQuery4= "SELECT * FROM wpzz_posts WHERE id = '$product_id'";
+                                                                            $strResultado4 = $obj_conexion->query($strQuery4);
+                                                                            $strDatos4 = mysqli_fetch_array($strResultado4);
+                                                                            $nombrepro	 = $strDatos4['post_title'];  
+                                                                            $date_created = $row["date_created"];  
+                                                                            $product_qty = $row["product_qty"];  
+                                                                            $product_net_revenue = $row["product_net_revenue"];  
+                                                                        ?>
+                                                                        <tr>
+                                                                        <td class=""><a href="seguimiento.php?tepuy_id=<?php echo $row["order_item_id"]; ?>"><?php echo $row["order_item_id"]; ?></a></td>
+                                                                        <td class=""><?php echo $row["product_id"]; ?></td>
+                                                                        <td class=""><?php echo $nombrepro; ?></td>
+                                                                        <td class=""><?php echo $row["date_created"]; ?></td>
+                                                                        <td class=""><?php echo $row["product_qty"]; ?></td>     
+                                                                        <td class=""><?php echo $row["product_net_revenue"]; ?></td>
+                                                                        <td class="">En Proceso</td>
+                                                                        </tr>
+                                                                        <?php
+                                                                        }
+                                                                        ?>
+                                                                        </tbody>
+                                                                        </table>
+
+                                                                </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                         </div>
+                                        <div class="au-task-list js-scrollbar3">
+
+                                        </div>
+                                        <div class="au-task__footer">
+                                            <button class="au-btn au-btn--green m-b-20">Actualizar Datos</button>
+                                        </div>
+                                    </div>
+                                    <div class="au-message__item unread">
+                                                    <div class="au-message__item-inner">
+                                                        <div class="au-message__item-text">
+                                                            <div class="avatar-wrap">
+                                                                <div class="avatar">
+                                                                    <img src="images/icon/logo_lit.png" alt="John Smith">
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="row">
+                                                                
+                                                            <div class="text col-md-6">
+                                                                <h5 class="name">Resumen de Cuenta</h5>
+                                                                <p>Usuario: <?php echo $mruser; ?></p>
+                                                                <p>ID: <?php echo $mrid; ?></p>
+                                                                <p>Correo Electronico: <?php echo $mrmail; ?></p>
+                                                                <p>Perfil de Usuario: <?php echo $mrlevel; ?></p>
+                                                                <p>Registrado desde: <?php echo $mrreg; ?></p>
+                                                                <p>Nombre: <?php echo $first_name; ?></p>
+                                                                <p>Apellido: <?php echo $last_name; ?></p>
+                                                                <p>Ciudad: <?php echo $city; ?> <?php echo $country; ?></p>
+                                                            </div>
+                                                             <div class="col-md-4">
+                                                                 <div class="card">
+                                                                     <div class="card-header">
+                                                                        <strong class="card-title">Mas información</strong>
+                                                                    </div>
+                                                                <div class="card-body">
+                                                                        <p class="card-text">
+                                                                        Para cargar los datos de tu transferencia y hacerle seguimiento a tu pedido, ingresa al ID de compra en la tabla.
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div></div>
+                                                            
                                                             <div class="col-md-12">
                                                                 <small>Resumén de Productos Comprados(s)</small>
                                                                 <?php
