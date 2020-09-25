@@ -1,5 +1,8 @@
 <?php
-session_start();
+    session_start();
+    if (!isset($_SESSION['user_email'])) {
+        header('Location: ../login.php');
+    }
 require_once ('../conexion.php');
 
 //obtener el detalle de un producto por el api

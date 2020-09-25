@@ -1,4 +1,11 @@
 <?php
+    session_start();
+    if (!isset($_SESSION['user_email'])) {
+        header('Location: ../login.php');
+    }
+    $user_id = $_SESSION['ID'];
+    require_once ('../functions.php');
+
 
 if (isset($_FILES['excel_file']) && $_FILES['excel_file']['error'] === UPLOAD_ERR_OK) {
     $fileTmpPath = $_FILES['excel_file']['tmp_name'];
@@ -15,52 +22,80 @@ if (isset($_FILES['excel_file']) && $_FILES['excel_file']['error'] === UPLOAD_ER
     
     if(move_uploaded_file($fileTmpPath, $dest_path))
     {
-        require_once '../lib/PHPExcel/Classes/PHPExcel.php';
         $archivo = $uploadFileDir.$newFileName;
-        $inputFileType = PHPExcel_IOFactory::identify($archivo);
-        $objReader = PHPExcel_IOFactory::createReader($inputFileType);
-        $objPHPExcel = $objReader->load($archivo);
-        $sheet = $objPHPExcel->getSheet(0); 
-        $highestRow = $sheet->getHighestRow(); 
-        $highestColumn = $sheet->getHighestColumn();
+        $data = readExcel($archivo);
+        $pilaUpdate = array();
+        $pilaAdd = array();
+        for($i = 2; $i <= count($data); ++$i) {
+            $codigoVendedor = $data[$i]['0'];
+            $id_vendedor = $user_id;
+            $nombrePro = $data[$i]['1'];
+            $descripPro = $data[$i]['2'];
+            $precioPro = $data[$i]['3'];
+            $existPro = $data[$i]['4'];
+            $idLocal = findProduct($codigoVendedor,$id_vendedor);
 
-        for($col = 'A'; $col < 'Z';){
-            if (empty($sheet->getCell($col.'1')->getValue())){
-                $col = 'Z';
+            if ($idLocal > 0){
+                $id_woo = updateProduct($idLocal,$codigoVendedor,$nombrePro,$descripPro,$precioPro,$existPro);
+                $producto = [
+                    'id' => $id_woo,
+                    'name' => $nombrePro,
+                    'type' => 'simple',
+                    'sku'  => $idLocal,
+                    'regular_price' => number_format($precioPro, 2, '.', ''),
+                    'description' => $descripPro,
+                    'short_description' => $codigoVendedor,
+                    'categories' => [
+                        [
+                            'id' => 119
+                        ]
+                    ],
+                ];
+                array_push($pilaUpdate, $producto);
             } else {
-                $highestColumn = $col;
-                $col++;
+                $idLocal = addProduct($codigoVendedor,$nombrePro,$descripPro,$precioPro,$existPro,$id_vendedor);
+                $producto = [
+                    'name' => $nombrePro,
+                    'type' => 'simple',
+                    'sku'  => $idLocal,
+                    'regular_price' => number_format($precioPro, 2, '.', ''),
+                    'description' => $descripPro,
+                    'short_description' => $codigoVendedor,
+                    'categories' => [
+                        [
+                            'id' => 119
+                        ]
+                    ],
+                ];
+                array_push($pilaAdd, $producto);
             }
-            
+        } // Fin For
+        if(count($pilaAdd) > 0){
+            $tmp = addBashProduct($pilaAdd); 
+            $arr = (array) $tmp;
+               
+            for($i = 0; $i <= count($arr["create"]); ++$i) {
+                if(!empty($arr["create"][$i]->id) && !empty($arr["create"][$i]->sku)){
+                    updateId_Woo($arr["create"][$i]->id,$arr["create"][$i]->sku);
+                }
+                
+            }
+            echo count($pilaAdd)." Productos agregado <br>";            
         }
-        $row = 1;
-        $bandera = true;
-        do{
-            
-            for ($col = 'A'; $col <= $highestColumn; $col++){
-                $fila[$col] = $sheet->getCell($col.$row)->getValue(); 
+        if(count($pilaUpdate) > 0){
+            $tmp = updateBashProduct($pilaUpdate); 
+            $arr = (array) $tmp;
+               
+            for($i = 0; $i <= count($arr["update"]); ++$i) {
+                if(!empty($arr["update"][$i]->id) && !empty($arr["update"][$i]->sku)){
+                    updateId_Woo($arr["update"][$i]->id,$arr["update"][$i]->sku);
+                }
+                
             }
-            $fila = array_filter($fila);
-            if(count($fila) == 0) {
-                $bandera = false;
-                $row--;
-            }else{
-                $row++;
-            }
-        }while($bandera == true);
-
-        $highestRow = $row;
-
-        echo"Rows: $highestRow Cols: $highestColumn";
-        echo("<table border=1>");
-        for ($row = 1; $row <= $highestRow; $row++){
-            echo ("<tr>");
-            for($col = 'A'; $col <= $highestColumn; $col++){
-                echo("<td>". $sheet->getCell($col.$row)->getValue() ."</td>");
-            }
-            echo ("</tr>");
+            echo count($pilaUpdate)." Productos actualizados <br>"; 
         }
-        echo("</table>");
+        
+        echo "<br>Fin";
     }
     else
     {
