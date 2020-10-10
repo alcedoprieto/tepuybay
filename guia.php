@@ -2,7 +2,10 @@
   error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_WARNING & ~E_NOTICE);
   date_default_timezone_set("America/Caracas");
 
-  
+  session_start();
+    if (!isset($_SESSION['user_email'])) {
+        header('Location: login.php');
+    }
     include('conexion.php');
     $tepuy_id = $_GET['tepuy_id'];
     $seguimiento_id = $_GET['seguimiento_id'];

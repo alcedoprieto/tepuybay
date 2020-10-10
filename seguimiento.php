@@ -1,7 +1,10 @@
 <?PHP 
   error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_WARNING & ~E_NOTICE);
   date_default_timezone_set("America/Caracas");
-
+session_start();
+    if (!isset($_SESSION['user_email'])) {
+        header('Location: login.php');
+    }
   
     include('conexion.php');
     $tepuy_id = $_GET['tepuy_id'];
@@ -11,7 +14,7 @@
     $product_net_revenue = $_GET['product_net_revenue'];
     $boton=$_GET["boton"];
 
-    $sql = "SELECT * FROM wpzz_wc_order_product_lookup WHERE order_item_id = '$tepuy_id' ";
+    $sql = "SELECT * FROM wpck_wc_order_product_lookup WHERE order_item_id = '$tepuy_id' ";
     $busqueda = $obj_conexion -> query($sql);
     if($registro=mysqli_fetch_array($busqueda)){
       $date_created = $registro['date_created'];
@@ -19,7 +22,7 @@
       $product_qty = $registro['product_qty'];
       $product_net_revenue = $registro['product_net_revenue'];
     }
-        $sql1 = "SELECT * FROM wpzz_posts WHERE id = '$product_id'";
+        $sql1 = "SELECT * FROM wpck_posts WHERE id = '$product_id'";
         $busqueda1 = $obj_conexion -> query($sql1);
         if($registro1=mysqli_fetch_array($busqueda1)){
         $post_title = $registro1['post_title'];
@@ -27,14 +30,15 @@
     if($boton=="Guardar"){
         $consulta="INSERT INTO wp_report_tepuy (tepuy_id, product_name, product_id, product_date, banco_nombre, banco_transfer, banco_fecha, status_id, banco_monto) 
         VALUES ('$tepuy_id', '$post_title', '$product_id', '$date_created', '$banco_nombre', '$banco_transfer', '$banco_fecha', 'En Proceso', '$product_net_revenue')";
-        $resultado = $obj_conexion -> query($consulta)|| die("Ya se Registro el Envio de la Transferencia");
+        $resultado = $obj_conexion -> query($consulta)|| die("Error Transferencia");
         if($resultado)
         {
-            echo "<script>alert('Guardado Exitoso');</script>";
+            echo '<script>setTimeout(function(){swal({title:"Buen trabajo!!!",text:"Transferencia Registrada",type:"success"},
+            function(isConfirm){location.href="index.php";});}, 100);</script>';
         }
         else
         {
-            echo "<script>alert('Datos Errados');</script>";
+            echo '<script>setTimeout(function(){swal({title:"Error en Registro!!!",text:"Falla al Registrarse",type:"warning"});}, 100);</script>';
         }
     }
 
@@ -44,16 +48,16 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+<head><meta charset="gb18030">
     <!-- Required meta tags-->
-    <meta charset="UTF-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="au theme template">
     <meta name="author" content="Hau Nguyen">
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Dashboard</title>
+    <title>.: TepuyBay :.</title>
 
     <!-- Fontfaces CSS-->
     <link href="css/font-face.css" rel="stylesheet" media="all">

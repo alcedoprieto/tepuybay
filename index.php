@@ -7,13 +7,27 @@
         header('Location: login.php');
     }
     include('conexion.php');
+  
+    $meta_key = $_SESSION['meta_key'];
     $mruser = $_SESSION['user_login'];
     $mrmail = $_SESSION['user_email'];
     $mrlevel = $_SESSION['user_status'];
     $mrreg = $_SESSION['user_registered'];
     $mrid= $_SESSION['ID'];
 
-    $sql = "SELECT * FROM wpzz_wc_customer_lookup WHERE user_id ='$mrid' ";
+    $strQuery4= "SELECT * FROM wpck_usermeta WHERE (user_id = '$mrid') AND (meta_key = 'wpck_capabilities')";
+    $strResultado4 = $obj_conexion->query($strQuery4);
+    $strDatos4 = mysqli_fetch_array($strResultado4);
+    $meta_key = $strDatos4['meta_key'];  
+    $meta_value = $strDatos4['meta_value'];  
+    if ($meta_value == 'a:1:{s:6:"seller";b:1;}'){
+        $statusNivel = "Vendedor";
+    } else {
+        $statusNivel = "Cliente";
+    }
+
+
+    $sql = "SELECT * FROM wpck_wc_customer_lookup WHERE user_id ='$mrid' ";
     $busqueda = $obj_conexion -> query($sql);
     if($registro=mysqli_fetch_array($busqueda)){
       $first_name = $registro['first_name'];
@@ -36,7 +50,7 @@
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Dashboard</title>
+    <title>.: TepuyBay :.</title>
 
     <!-- Fontfaces CSS-->
     <link href="css/font-face.css" rel="stylesheet" media="all">
@@ -88,21 +102,22 @@
                                     <div class="au-card-title" style="background-image:url('images/bg-title-01.jpg');">
                                         <div class="bg-overlay bg-overlay--blue"></div>
                                         <h3>
-                                            <i class="zmdi zmdi-account-calendar"></i>Bienvenido <?php echo $mruser; ?></h3>
+                                            <i class="zmdi zmdi-account-calendar"></i>Bienvenido <?php echo $mruser; ?></i> <?php echo $statusNivel; ?></h3>
                                     </div>
                                 
                                     <div class="au-message__item unread">
+                                                <?php
+                                                    if ($statusNivel == "Cliente")
+                                                    {
+                                                ?>
                                                     <div class="au-message__item-inner">
                                                         <div class="au-message__item-text">
                                                             <div class="avatar-wrap">
                                                                 <div class="avatar">
-                                                                    <img src="images/icon/logo_lit.png" alt="John Smith">
+                                                                    <img src="images/icon/avatar-02.jpg" alt="John Smith">
                                                                 </div>
                                                             </div>
-                                                            
-                                                            <div class="row">
-                                                                
-                                                            <div class="text col-md-6">
+                                                            <div class="text">
                                                                 <h5 class="name">Resumen de Cuenta</h5>
                                                                 <p>Usuario: <?php echo $mruser; ?></p>
                                                                 <p>ID: <?php echo $mrid; ?></p>
@@ -113,27 +128,14 @@
                                                                 <p>Apellido: <?php echo $last_name; ?></p>
                                                                 <p>Ciudad: <?php echo $city; ?> <?php echo $country; ?></p>
                                                             </div>
-                                                             <div class="col-md-4">
-                                                                 <div class="card">
-                                                                     <div class="card-header">
-                                                                        <strong class="card-title">Mas información</strong>
-                                                                    </div>
-                                                                <div class="card-body">
-                                                                        <p class="card-text">
-                                                                        Para cargar los datos de tu transferencia y hacerle seguimiento a tu pedido, ingresa al ID de compra en la tabla.
-                                                                            </p>
-                                                                        </div>
-                                                                    </div>
-                                                                </div></div>
-                                                            
                                                             <div class="col-md-12">
-                                                                <small>Resumén de Productos Comprados(s)</small>
+                                                                <small>Resumen de Productos Comprados(s)</small>
                                                                 <?php
 
                                                                 
                                                                     include('conexion.php');
 
-                                                                    $query = "SELECT * FROM wpzz_wc_order_product_lookup WHERE customer_id ='$customer_id'";
+                                                                    $query = "SELECT * FROM wpck_wc_order_product_lookup WHERE customer_id ='$customer_id'";
                                                                     $result = mysqli_query($obj_conexion, $query);
 
                                                                     ?>
@@ -147,18 +149,19 @@
                                                                             <th>Nombre Producto</th>
                                                                             <th>Fecha de Compra</th>
                                                                             <th>Cantidad Comprada</th>
-                                                                            <th>Precio</th>    
+                                                                            <th>Precio</th>   
+                                                                            <th>Nro Transferencia</th>  
                                                                             <th>Status</th>                                                              
                                                                         </tr>
                                                                         </thead>
                                                                         <tbody>
                                                                         <?php
-                                                                        
+                                                                            
                                                                         while($row = mysqli_fetch_array($result))
                                                                         {
                                                                             $order_item_id  = $row["order_item_id"];  
                                                                             $product_id = $row["product_id"];  
-                                                                            $strQuery4= "SELECT * FROM wpzz_posts WHERE id = '$product_id'";
+                                                                            $strQuery4= "SELECT * FROM wpck_posts WHERE id = '$product_id'";
                                                                             $strResultado4 = $obj_conexion->query($strQuery4);
                                                                             $strDatos4 = mysqli_fetch_array($strResultado4);
                                                                             $nombrepro	 = $strDatos4['post_title'];  
@@ -173,6 +176,7 @@
                                                                         <td class=""><?php echo $row["date_created"]; ?></td>
                                                                         <td class=""><?php echo $row["product_qty"]; ?></td>     
                                                                         <td class=""><?php echo $row["product_net_revenue"]; ?></td>
+                                                                        <td class="">Sin Numero Registrado</td>
                                                                         <td class="">En Proceso</td>
                                                                         </tr>
                                                                         <?php
@@ -186,108 +190,37 @@
                                                         
                                                     </div>
                                          </div>
-                                        <div class="au-task-list js-scrollbar3">
-
-                                        </div>
-                                        <div class="au-task__footer">
-                                            <button class="au-btn au-btn--green m-b-20">Actualizar Datos</button>
-                                        </div>
-                                    </div>
-                                    <div class="au-message__item unread">
+                                         <?php
+                                            }
+                                        ?>
+                                          <!-- VENDEDORES -->
+                                        <?php
+                                            if ($statusNivel == "Vendedor")
+                                            {
+                                        ?>
+                                         <div class="au-message__item unread">
                                                     <div class="au-message__item-inner">
                                                         <div class="au-message__item-text">
                                                             <div class="avatar-wrap">
                                                                 <div class="avatar">
-                                                                    <img src="images/icon/logo_lit.png" alt="John Smith">
+                                                                    <img src="images/icon/avatar-02.jpg" alt="John Smith">
                                                                 </div>
                                                             </div>
-                                                            
-                                                            <div class="row">
-                                                                
-                                                            <div class="text col-md-6">
-                                                                <h5 class="name">Resumen de Cuenta</h5>
+                                                            <div class="text">
+                                                                <h5 class="name">Datos del Vendedor</h5>
                                                                 <p>Usuario: <?php echo $mruser; ?></p>
-                                                                <p>ID: <?php echo $mrid; ?></p>
                                                                 <p>Correo Electronico: <?php echo $mrmail; ?></p>
-                                                                <p>Perfil de Usuario: <?php echo $mrlevel; ?></p>
                                                                 <p>Registrado desde: <?php echo $mrreg; ?></p>
                                                                 <p>Nombre: <?php echo $first_name; ?></p>
                                                                 <p>Apellido: <?php echo $last_name; ?></p>
-                                                                <p>Ciudad: <?php echo $city; ?> <?php echo $country; ?></p>
-                                                            </div>
-                                                             <div class="col-md-4">
-                                                                 <div class="card">
-                                                                     <div class="card-header">
-                                                                        <strong class="card-title">Mas información</strong>
-                                                                    </div>
-                                                                <div class="card-body">
-                                                                        <p class="card-text">
-                                                                        Para cargar los datos de tu transferencia y hacerle seguimiento a tu pedido, ingresa al ID de compra en la tabla.
-                                                                            </p>
-                                                                        </div>
-                                                                    </div>
-                                                                </div></div>
-                                                            
-                                                            <div class="col-md-12">
-                                                                <small>Resumén de Productos Comprados(s)</small>
-                                                                <?php
 
-                                                                
-                                                                    include('conexion.php');
-
-                                                                    $query = "SELECT * FROM wpzz_wc_order_product_lookup WHERE customer_id ='$customer_id'";
-                                                                    $result = mysqli_query($obj_conexion, $query);
-
-                                                                    ?>
-
-                                                                    <div class="table-responsive">
-                                                                        <table class="table table-top-campaign">
-                                                                        <thead>
-                                                                        <tr>
-                                                                            <th>Id de Compra</th>
-                                                                            <th>Codigo Producto</th>
-                                                                            <th>Nombre Producto</th>
-                                                                            <th>Fecha de Compra</th>
-                                                                            <th>Cantidad Comprada</th>
-                                                                            <th>Precio</th>    
-                                                                            <th>Status</th>                                                              
-                                                                        </tr>
-                                                                        </thead>
-                                                                        <tbody>
-                                                                        <?php
-                                                                        
-                                                                        while($row = mysqli_fetch_array($result))
-                                                                        {
-                                                                            $order_item_id  = $row["order_item_id"];  
-                                                                            $product_id = $row["product_id"];  
-                                                                            $strQuery4= "SELECT * FROM wpzz_posts WHERE id = '$product_id'";
-                                                                            $strResultado4 = $obj_conexion->query($strQuery4);
-                                                                            $strDatos4 = mysqli_fetch_array($strResultado4);
-                                                                            $nombrepro	 = $strDatos4['post_title'];  
-                                                                            $date_created = $row["date_created"];  
-                                                                            $product_qty = $row["product_qty"];  
-                                                                            $product_net_revenue = $row["product_net_revenue"];  
-                                                                        ?>
-                                                                        <tr>
-                                                                        <td class=""><a href="seguimiento.php?tepuy_id=<?php echo $row["order_item_id"]; ?>"><?php echo $row["order_item_id"]; ?></a></td>
-                                                                        <td class=""><?php echo $row["product_id"]; ?></td>
-                                                                        <td class=""><?php echo $nombrepro; ?></td>
-                                                                        <td class=""><?php echo $row["date_created"]; ?></td>
-                                                                        <td class=""><?php echo $row["product_qty"]; ?></td>     
-                                                                        <td class=""><?php echo $row["product_net_revenue"]; ?></td>
-                                                                        <td class="">En Proceso</td>
-                                                                        </tr>
-                                                                        <?php
-                                                                        }
-                                                                        ?>
-                                                                        </tbody>
-                                                                        </table>
-
-                                                                </div>
-                                                        </div>
-                                                        
+                                                            </div>                                                       
                                                     </div>
                                          </div>
+                                        <?php
+                                            }
+                                        ?>
+
                                         <div class="au-task-list js-scrollbar3">
 
                                         </div>

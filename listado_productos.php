@@ -13,15 +13,7 @@
     $mrreg = $_SESSION['user_registered'];
     $mrid= $_SESSION['ID'];
 
-    $sql = "SELECT * FROM wpzz_wc_customer_lookup WHERE user_id ='$mrid' ";
-    $busqueda = $obj_conexion -> query($sql);
-    if($registro=mysqli_fetch_array($busqueda)){
-      $first_name = $registro['first_name'];
-      $last_name = $registro['last_name'];
-      $customer_id = $registro['customer_id'];
-      $city = $registro['city'];
-      $country = $registro['country'];
-    }
+   
 
 ?>
 <!DOCTYPE html>
@@ -36,7 +28,7 @@
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Dashboard</title>
+    <title>.: TepuyBay :.</title>
 
     <!-- Fontfaces CSS-->
     <link href="css/font-face.css" rel="stylesheet" media="all">
@@ -105,7 +97,7 @@
                                                                 
                                                                     include('conexion.php');
 
-                                                                    $query = "SELECT * FROM wpzz_wc_order_product_lookup WHERE customer_id ='$customer_id'";
+                                                                    $query = "SELECT * FROM wp_report_tepuy";
                                                                     $result = mysqli_query($obj_conexion, $query);
 
                                                                     ?>
@@ -118,9 +110,10 @@
                                                                             <th>Codigo Producto</th>
                                                                             <th>Nombre Producto</th>
                                                                             <th>Fecha de Compra</th>
-                                                                            <th>Cantidad Comprada</th>
-                                                                            <th>Precio</th>    
-                                                                            <th>Status</th>                                                              
+                                                                            <th>Nro Transferencia</th>
+                                                                            <th>Banco</th>
+                                                                            <th>Status</th>    
+                                                                            <th>Nro Guia</th>                                                              
                                                                         </tr>
                                                                         </thead>
                                                                         <tbody>
@@ -128,28 +121,25 @@
                                                                         
                                                                         while($row = mysqli_fetch_array($result))
                                                                         {
-                                                                            $order_item_id  = $row["order_item_id"];  
-                                                                            $product_id = $row["product_id"];  
-                                                                            $strQuery4= "SELECT * FROM wpzz_posts WHERE id = '$product_id'";
-                                                                            $strResultado4 = $obj_conexion->query($strQuery4);
-                                                                            $strDatos4 = mysqli_fetch_array($strResultado4);
-                                                                            $nombrepro	 = $strDatos4['post_title'];  
-                                                                            $date_created = $row["date_created"];  
-                                                                            $product_qty = $row["product_qty"];  
-                                                                            $product_net_revenue = $row["product_net_revenue"]; 
-                                                                            $strQuery5= "SELECT * FROM wp_report_tepuy WHERE tepuy_id = '$order_item_id'";
-                                                                            $strResultado5 = $obj_conexion->query($strQuery5);
-                                                                            $strDatos5 = mysqli_fetch_array($strResultado5);
-                                                                            $status_id	 = $strDatos5['status_id']; 
+                                                                            $tepuy_id = $row["tepuy_id"];  
+                                                                            $product_id = $row["product_id"];
+                                                                            $product_name = $row["product_name"];
+                                                                            $product_date  = $row["product_date"];
+                                                                            $banco_transfer  = $row["banco_transfer"];
+                                                                            $banco_nombre  = $row["banco_nombre"];
+                                                                            $status_id  = $row["status_id"];
+                                                                            $seguimiento_id  = $row["seguimiento_id"];
+                                                                           
                                                                         ?>
                                                                         <tr>
-                                                                        <td class=""><a href="guia.php?tepuy_id=<?php echo $row["order_item_id"]; ?>"><?php echo $row["order_item_id"]; ?></a></td>
+                                                                        <td class=""><a href="guia.php?tepuy_id=<?php echo $row["tepuy_id"]; ?>"><?php echo $row["tepuy_id"]; ?></a></td>
                                                                         <td class=""><?php echo $row["product_id"]; ?></td>
-                                                                        <td class=""><?php echo $nombrepro; ?></td>
-                                                                        <td class=""><?php echo $row["date_created"]; ?></td>
-                                                                        <td class=""><?php echo $row["product_qty"]; ?></td>     
-                                                                        <td class=""><?php echo $row["product_net_revenue"]; ?></td>
-                                                                        <td class=""><?php echo $status_id; ?></td>
+                                                                        <td class=""><?php echo $product_name; ?></td>
+                                                                        <td class=""><?php echo $row["product_date"]; ?></td>
+                                                                        <td class=""><?php echo $row["banco_transfer"]; ?></td>
+                                                                        <td class=""><?php echo $row["banco_nombre"]; ?></td>     
+                                                                        <td class=""><?php echo $row["status_id"]; ?></td>
+                                                                        <td class=""><?php echo $seguimiento_id; ?></td>
                                                                         </tr>
                                                                         <?php
                                                                         }

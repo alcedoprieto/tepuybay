@@ -11,7 +11,7 @@
     $ID = $_POST['ID'];
     if ($_POST['boton'] != "") {  
 
-    $sql = "SELECT * FROM wpzz_users WHERE user_email='$user_email'";
+    $sql = "SELECT * FROM wpck_users WHERE user_email='$user_email'";
     $busqueda = $obj_conexion -> query($sql);
     $registro=mysqli_fetch_array($busqueda);
     mysqli_close($obj_conexion);
@@ -45,7 +45,7 @@
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Login</title>
+   <title>.: TepuyBay :.</title>
 
     <!-- Fontfaces CSS-->
     <link href="css/font-face.css" rel="stylesheet" media="all">
