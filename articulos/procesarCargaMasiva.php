@@ -1,5 +1,7 @@
 <?php
     session_start();
+    ini_set('max_execution_time', 3000);
+    set_time_limit(3000);
     if (!isset($_SESSION['user_email'])) {
         header('Location: ../login.php');
     }
@@ -33,43 +35,48 @@ if (isset($_FILES['excel_file']) && $_FILES['excel_file']['error'] === UPLOAD_ER
             $descripPro = $data[$i]['2'];
             $precioPro = $data[$i]['3'];
             $existPro = $data[$i]['4'];
-            $idLocal = findProduct($codigoVendedor,$id_vendedor);
+            if(!empty($codigoVendedor) && !empty($id_vendedor) && !empty($nombrePro) && !empty($descripPro) && !empty($precioPro) && !empty($existPro)){
+                $idLocal = findProduct($codigoVendedor,$id_vendedor);
 
-            if ($idLocal > 0){
-                $id_woo = updateProduct($idLocal,$codigoVendedor,$nombrePro,$descripPro,$precioPro,$existPro);
-                $producto = [
-                    'id' => $id_woo,
-                    'name' => $nombrePro,
-                    'type' => 'simple',
-                    'sku'  => $idLocal,
-                    'regular_price' => number_format($precioPro, 2, '.', ''),
-                    'description' => $descripPro,
-                    'short_description' => $codigoVendedor,
-                    'categories' => [
-                        [
-                            'id' => 119
-                        ]
-                    ],
-                ];
-                array_push($pilaUpdate, $producto);
-            } else {
-                $idLocal = addProduct($codigoVendedor,$nombrePro,$descripPro,$precioPro,$existPro,$id_vendedor);
-                $producto = [
-                    'name' => $nombrePro,
-                    'type' => 'simple',
-                    'sku'  => $idLocal,
-                    'regular_price' => number_format($precioPro, 2, '.', ''),
-                    'description' => $descripPro,
-                    'short_description' => $codigoVendedor,
-                    'categories' => [
-                        [
-                            'id' => 119
-                        ]
-                    ],
-                ];
-                array_push($pilaAdd, $producto);
-            }
+                if ($idLocal > 0){
+                    $id_woo = updateProduct($idLocal,$codigoVendedor,$nombrePro,$descripPro,$precioPro,$existPro);
+                    $producto = [
+                        'id' => $id_woo,
+                        'name' => $nombrePro,
+                        'type' => 'simple',
+                        'sku'  => $idLocal,
+                        'regular_price' => number_format($precioPro, 2, '.', ''),
+                        'description' => $descripPro,
+                        'short_description' => $codigoVendedor,
+                        'categories' => [
+                            [
+                                'id' => 119
+                            ]
+                        ],
+                    ];
+                    array_push($pilaUpdate, $producto);
+                } else {
+                    $idLocal = addProduct($codigoVendedor,$nombrePro,$descripPro,$precioPro,$existPro,$id_vendedor);
+                    if(is_int($idLocal)){
+                        $producto = [
+                            'name' => $nombrePro,
+                            'type' => 'simple',
+                            'sku'  => $idLocal,
+                            'regular_price' => number_format($precioPro, 2, '.', ''),
+                            'description' => $descripPro,
+                            'short_description' => $codigoVendedor,
+                            'categories' => [
+                                [
+                                    'id' => 119
+                                ]
+                            ],
+                        ];
+                        array_push($pilaAdd, $producto);
+                    } //Fin If
+                }
+            } // Fin if Verifica existencia de contenido
         } // Fin For
+        
         if(count($pilaAdd) > 0){
             $tmp = addBashProduct($pilaAdd); 
             $arr = (array) $tmp;

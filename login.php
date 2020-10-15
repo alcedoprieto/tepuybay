@@ -11,7 +11,7 @@
     $ID = $_POST['ID'];
     if ($_POST['boton'] != "") {  
 
-    $sql = "SELECT * FROM wpck_users WHERE user_email='$user_email'";
+    $sql = "SELECT * FROM wp_users WHERE user_email='$user_email'";
     $busqueda = $obj_conexion -> query($sql);
     $registro=mysqli_fetch_array($busqueda);
     mysqli_close($obj_conexion);

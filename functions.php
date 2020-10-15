@@ -17,6 +17,16 @@ function addBashProduct($pila){
         ];
         
         return $woocommerce->post('products/batch', $data);        
+    } else {
+        $chunks = array_chunk($pila, 99);
+        //print_r($chunks); exit;
+        for($i = 0; $i <= count($chunks); ++$i) {
+            $data = [
+                'create' => $chunks[$i]
+            ];
+            array_push($res, $woocommerce->post('products/batch', $data));   
+        }
+        return $res;
     }
 
 }
