@@ -2,6 +2,7 @@
     session_start();
     ini_set('max_execution_time', 3000);
     set_time_limit(3000);
+    header('Content-Type: application/json');
     if (!isset($_SESSION['user_email'])) {
         header('Location: ../login.php');
     }
@@ -29,16 +30,16 @@ if (isset($_FILES['excel_file']) && $_FILES['excel_file']['error'] === UPLOAD_ER
         $pilaUpdate = array();
         $pilaAdd = array();
         for($i = 2; $i <= count($data); ++$i) {
-            $codigoVendedor = $data[$i]['0'];
+            $codigoVendedor = trim($data[$i]['0']);
             $id_vendedor = $user_id;
-            $nombrePro = $data[$i]['1'];
-            $descripPro = $data[$i]['2'];
-            $precioPro = $data[$i]['3'];
-            $existPro = $data[$i]['4'];
+            $nombrePro = trim($data[$i]['1']);
+            $descripPro = trim($data[$i]['2']);
+            $precioPro = trim($data[$i]['3']);
+            $existPro = trim($data[$i]['4']);
             if(!empty($codigoVendedor) && !empty($id_vendedor) && !empty($nombrePro) && !empty($descripPro) && !empty($precioPro) && !empty($existPro)){
                 $idLocal = findProduct($codigoVendedor,$id_vendedor);
 
-                if ($idLocal > 0){
+                if ($idLocal == 0){
                     $id_woo = updateProduct($idLocal,$codigoVendedor,$nombrePro,$descripPro,$precioPro,$existPro);
                     $producto = [
                         'id' => $id_woo,
@@ -48,6 +49,7 @@ if (isset($_FILES['excel_file']) && $_FILES['excel_file']['error'] === UPLOAD_ER
                         'regular_price' => number_format($precioPro, 2, '.', ''),
                         'description' => $descripPro,
                         'short_description' => $codigoVendedor,
+                        'existencia' => $existPro,
                         'categories' => [
                             [
                                 'id' => 119
@@ -56,8 +58,10 @@ if (isset($_FILES['excel_file']) && $_FILES['excel_file']['error'] === UPLOAD_ER
                     ];
                     array_push($pilaUpdate, $producto);
                 } else {
-                    $idLocal = addProduct($codigoVendedor,$nombrePro,$descripPro,$precioPro,$existPro,$id_vendedor);
-                    if(is_int($idLocal)){
+                    $codigo = 'VAL';
+                    $idLocal = getSKU($codigo,$id_vendedor);
+                    addProduct($idLocal,$codigoVendedor,$nombrePro,$descripPro,$precioPro,$existPro,$id_vendedor);
+
                         $producto = [
                             'name' => $nombrePro,
                             'type' => 'simple',
@@ -65,6 +69,7 @@ if (isset($_FILES['excel_file']) && $_FILES['excel_file']['error'] === UPLOAD_ER
                             'regular_price' => number_format($precioPro, 2, '.', ''),
                             'description' => $descripPro,
                             'short_description' => $codigoVendedor,
+                            'existencia' => $existPro,
                             'categories' => [
                                 [
                                     'id' => 119
@@ -72,37 +77,11 @@ if (isset($_FILES['excel_file']) && $_FILES['excel_file']['error'] === UPLOAD_ER
                             ],
                         ];
                         array_push($pilaAdd, $producto);
-                    } //Fin If
-                }
+                } //Fin Else
             } // Fin if Verifica existencia de contenido
         } // Fin For
-        
-        if(count($pilaAdd) > 0){
-            $tmp = addBashProduct($pilaAdd); 
-            $arr = (array) $tmp;
-               
-            for($i = 0; $i <= count($arr["create"]); ++$i) {
-                if(!empty($arr["create"][$i]->id) && !empty($arr["create"][$i]->sku)){
-                    updateId_Woo($arr["create"][$i]->id,$arr["create"][$i]->sku);
-                }
-                
-            }
-            echo count($pilaAdd)." Productos agregado <br>";            
-        }
-        if(count($pilaUpdate) > 0){
-            $tmp = updateBashProduct($pilaUpdate); 
-            $arr = (array) $tmp;
-               
-            for($i = 0; $i <= count($arr["update"]); ++$i) {
-                if(!empty($arr["update"][$i]->id) && !empty($arr["update"][$i]->sku)){
-                    updateId_Woo($arr["update"][$i]->id,$arr["update"][$i]->sku);
-                }
-                
-            }
-            echo count($pilaUpdate)." Productos actualizados <br>"; 
-        }
-        
-        echo "<br>Fin";
+        $arr = array('add' => $pilaAdd, 'update' => $pilaUpdate);
+        echo json_encode($arr);
     }
     else
     {
