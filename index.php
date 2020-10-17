@@ -78,17 +78,17 @@
 <body class="animsition">
     <div class="page-wrapper">
         <!-- HEADER MOBIL-->
-        <?php include("headermobil.php"); ?>
+        <?php include("layouts/headermobil.php"); ?>
         <!-- END HEADER MOBILE-->
 
         <!-- MENU SIDEBAR-->
-        <?php include("aside.php"); ?>
+        <?php include("layouts/aside.php"); ?>
         <!-- END MENU SIDEBAR-->
 
         <!-- CONTENIDO DE PAGINA-->
         <div class="page-container">
             <!-- HEADER DESKTOP-->
-            <?php include("header.php"); ?>
+            <?php include("layouts/header.php"); ?>
             <!-- HEADER DESKTOP-->
 
             <!-- AREA DE TRABAJO-->

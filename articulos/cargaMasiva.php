@@ -112,10 +112,10 @@ include("../layouts/topLayout.php");
                               btnEnviar.removeAttr("disabled");
                               jsonRes = data.responseJSON;
                               $.each(jsonRes.add, function(index, value){
-                                  $("#artUpload tbody").append("<tr><th scope='row'>" + value.short_description + "</th><td>" + value.name + "</td><td>" + value.description + "</td><td>" + value.regular_price + "</td><td>" + value.existencia + "</td></tr>");
+                                  $("#artUpload tbody").append("<tr><th scope='row'>" + value.short_description + "</th><td>" + value.name + "</td><td>" + value.description + "</td><td>" + value.regular_price + "</td><td>" + value.stock_quantity + "</td></tr>");
                               });
                               $.each(jsonRes.update, function(index, value){
-                                $("#artUpload tbody").append("<tr><th scope='row'>" + value.short_description + "</th><td>" + value.name + "</td><td>" + value.description + "</td><td>" + value.regular_price + "</td><td>" + value.existencia + "</td></tr>");
+                                $("#artUpload tbody").append("<tr><th scope='row'>" + value.short_description + "</th><td>" + value.name + "</td><td>" + value.description + "</td><td>" + value.regular_price + "</td><td>" + value.stock_quantity + "</td></tr>");
                               });
                           },
                           error: function(data){
@@ -132,4 +132,3 @@ include("../layouts/topLayout.php");
             </script>
             <!-- END PAGE CONTAINER-->
 <?php include("../layouts/bottomLayout.php"); ?>
-

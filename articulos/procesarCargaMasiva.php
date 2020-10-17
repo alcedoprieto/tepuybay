@@ -49,7 +49,8 @@ if (isset($_FILES['excel_file']) && $_FILES['excel_file']['error'] === UPLOAD_ER
                         'regular_price' => number_format($precioPro, 2, '.', ''),
                         'description' => $descripPro,
                         'short_description' => $codigoVendedor,
-                        'existencia' => $existPro,
+                        'manage_stock' => true,
+                        'stock_quantity' => $existPro,
                         'categories' => [
                             [
                                 'id' => 119
@@ -69,7 +70,8 @@ if (isset($_FILES['excel_file']) && $_FILES['excel_file']['error'] === UPLOAD_ER
                             'regular_price' => number_format($precioPro, 2, '.', ''),
                             'description' => $descripPro,
                             'short_description' => $codigoVendedor,
-                            'existencia' => $existPro,
+                            'manage_stock' => true,
+                            'stock_quantity' => $existPro,
                             'categories' => [
                                 [
                                     'id' => 119
