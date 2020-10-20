@@ -82,7 +82,13 @@ include("../layouts/topLayout.php");
 </div>
             <!-- FIN AREA DE TRABAJO-->
             <script type="text/javascript">
-              var jsonRes;
+              var jsonRes; var tmp;
+              var pivoteAdd = 99;
+              var pivoteUp = 99;
+              var i = 1;
+              var j = 1;
+              var addArt =  new Array();
+              var upArt =  new Array();
               $(document).ready(function () {
                   $("#formCargaMasiva").bind("submit",function(){
                       // Capturamnos el boton de envío
@@ -110,12 +116,34 @@ include("../layouts/topLayout.php");
                               * */
                               btnEnviar.val("Enviar formulario");
                               btnEnviar.removeAttr("disabled");
+                              tmp = data;
                               jsonRes = data.responseJSON;
+                              if(jsonRes.add.length < 100){
+                                pivoteAdd = jsonRes.add.length -1;
+                              }
                               $.each(jsonRes.add, function(index, value){
                                   $("#artUpload tbody").append("<tr><th scope='row'>" + value.short_description + "</th><td>" + value.name + "</td><td>" + value.description + "</td><td>" + value.regular_price + "</td><td>" + value.stock_quantity + "</td></tr>");
+                                  addArt.push(value.sku);
+                                  //console.log(index);
+                                  if(index == pivoteAdd){
+                                    console.log("Entro "+i);
+                                    sendToWP(addArt,"add");
+                                    i++;
+                                    pivoteAdd = i * 100 - 1;
+                                  }
                               });
+                              if(jsonRes.update.length < 100){
+                                pivoteUp = jsonRes.update.length -1;
+                              }
                               $.each(jsonRes.update, function(index, value){
                                 $("#artUpload tbody").append("<tr><th scope='row'>" + value.short_description + "</th><td>" + value.name + "</td><td>" + value.description + "</td><td>" + value.regular_price + "</td><td>" + value.stock_quantity + "</td></tr>");
+                                upArt.push(value.sku);
+                                if(index == pivoteUp){
+                                    console.log("Entro "+i);
+                                    sendToWP(upArt,"update" );
+                                    j++;
+                                    pivoteUp = j * 100 - 1;
+                                  }
                               });
                           },
                           error: function(data){
@@ -129,6 +157,34 @@ include("../layouts/topLayout.php");
                       return false;
                   });
               });
+              function sendToWP(jsonRes,met){
+                //addLeng = jsonRes.add.length;
+                //upLeng = jsonRes.update.length;
+                if(met == "add"){
+                  data= {"add": JSON.stringify(jsonRes)};
+                } else {
+                  data= {"update": JSON.stringify(jsonRes)};
+                }
+                
+                    
+                    /*
+                    $.post( "sendCM.php", data, function( response ) {
+                      console.log( response ); 
+                    });
+                    */
+                    $.getJSON( "sendCM.php", data )
+                        .done(function( data, textStatus, jqXHR ) {
+                            if ( console && console.log ) {
+                                console.log( "La solicitud se ha completado correctamente." );
+                            }
+                        })
+                        .fail(function( jqXHR, textStatus, errorThrown ) {
+                            if ( console && console.log ) {
+                                console.log( "Algo ha fallado: " +  textStatus );
+                            }
+                    });
+                  
+                }
             </script>
             <!-- END PAGE CONTAINER-->
 <?php include("../layouts/bottomLayout.php"); ?>

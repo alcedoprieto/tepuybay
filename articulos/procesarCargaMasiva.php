@@ -39,7 +39,7 @@ if (isset($_FILES['excel_file']) && $_FILES['excel_file']['error'] === UPLOAD_ER
             if(!empty($codigoVendedor) && !empty($id_vendedor) && !empty($nombrePro) && !empty($descripPro) && !empty($precioPro) && !empty($existPro)){
                 $idLocal = findProduct($codigoVendedor,$id_vendedor);
 
-                if ($idLocal == 0){
+                if ($idLocal){
                     $id_woo = updateProduct($idLocal,$codigoVendedor,$nombrePro,$descripPro,$precioPro,$existPro);
                     $producto = [
                         'id' => $id_woo,

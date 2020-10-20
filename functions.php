@@ -5,7 +5,14 @@ require_once ('conexion.php');
 require_once __DIR__ . '/vendor/autoload.php';
 
 use Automattic\WooCommerce\Client;
-use Automattic\WooCommerce\HttpClient\HttpClientException;
+
+function logMessage($mensaje){
+        $date = date("F j, Y, g:i a");
+        $myfile = fopen("logs-".date('m-Y').".log", "a") or die("Unable to open file!");
+        fwrite($myfile, $date."\t".$_SERVER['SCRIPT_NAME']."\t->\t".$mensaje."\n");
+        fclose($myfile);
+        return("true");
+}
 
 
 function addBashProduct($pila){
@@ -106,11 +113,11 @@ function findProduct($codigo,$id_vendedor){
         die('Error de conexión: ' . mysqli_connect_error(). ' ' .mysqli_connect_errno() );
     }
 
-    $sql = "SELECT * FROM productos WHERE codigo = '$codigo' AND id_vendedor = $id_vendedor";
+    $sql = "SELECT id FROM productos WHERE codigo = '$codigo' AND id_vendedor = $id_vendedor";
     $result = $obj_conexion->query($sql);
 
     if ($result->num_rows == 0) {
-        $id = 0;
+        $id = false;
     } else {
         $data = $result->fetch_assoc();
         $id = $data['id'];
@@ -129,7 +136,7 @@ function updateProduct($id,$codigo,$nombre,$descripcion,$precio,$existencia){
     $precio = floatvalue(trim($precio));
     $existencia = trim($existencia);
     $sql = "UPDATE `productos` SET  `codigo` = '$codigo', `nombre` = '$nombre', `descripcion` = '$descripcion', `precio` = '$precio',`existencia` = '$existencia', `update_at` = current_timestamp() WHERE `id` = '$id'";
-
+    logMessage($sql);
     if ($obj_conexion->query($sql)) {
         $sql = "SELECT * FROM productos WHERE `id` = '$id'";
         $result = $obj_conexion->query($sql);
@@ -137,7 +144,7 @@ function updateProduct($id,$codigo,$nombre,$descripcion,$precio,$existencia){
         $obj_conexion->close();
         return $data['id_woo'];
     } else  {
-        print_r("Error: " . $sql . "<br>" . $obj_conexion->error);
+        print_r("Error: " . $sql . "<br>" . $obj_conexion->error); exit;
         $obj_conexion->close();
         return false;
     }
@@ -216,4 +223,23 @@ function updateId_Woo($id_woo,$idLocal){
         $obj_conexion->close();
         return false;
     }
+}
+
+function searchPila($list){
+    $obj_conexion = mysqli_connect(SERVER, USERDB, PASSDB, DATABASE);
+    if (!$obj_conexion) {
+        die('Error de conexión: ' . mysqli_connect_error(). ' ' .mysqli_connect_errno() );
+    }
+
+    $sql = "SELECT * FROM productos WHERE id IN ($list)";
+    
+    $result = $obj_conexion->query($sql);
+
+    if ($result->num_rows == 0) {
+        $data = false;
+    } else {
+        $data = $result;
+    }
+    $obj_conexion->close();
+    return $data;
 }
