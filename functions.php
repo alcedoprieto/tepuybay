@@ -5,11 +5,18 @@ require_once ('conexion.php');
 require_once __DIR__ . '/vendor/autoload.php';
 
 use Automattic\WooCommerce\Client;
-use Automattic\WooCommerce\HttpClient\HttpClientException;
+
+function logMessage($mensaje){
+        $date = date("F j, Y, g:i a");
+        $myfile = fopen("logs-".date('m-Y').".log", "a") or die("Unable to open file!");
+        fwrite($myfile, $date."\t".$_SERVER['SCRIPT_NAME']."\t->\t".$mensaje."\n");
+        fclose($myfile);
+        return("true");
+}
 
 
 function addBashProduct($pila){
-    $woocommerce = new Client(URL_STORE, CK_STORE ,CS_STORE,[ 'wp_api' => true, 'version' => 'wc/v3' ]);
+    $woocommerce = new Client(URL_STORE, CK_STORE ,CS_STORE,[ 'wp_api' => true, 'version' => 'wc/v3','timeout' => 60]);
     
     if(count($pila) <= 100){
         $data = [
@@ -44,7 +51,7 @@ function updateBashProduct($pila){
 }
 
 function addSingleProduct($sku,$nomPro,$prePro,$desPro,$codPro,$catPro){
-    $woocommerce = new Client(URL_STORE, CK_STORE ,CS_STORE,[ 'wp_api' => true, 'version' => 'wc/v3' ]);
+    $woocommerce = new Client(URL_STORE, CK_STORE ,CS_STORE,[ 'wp_api' => true, 'version' => 'wc/v3']);
     
     $data = [
         'name' => $nomPro,
@@ -62,8 +69,21 @@ function addSingleProduct($sku,$nomPro,$prePro,$desPro,$codPro,$catPro){
     ];
     return $woocommerce->post('products', $data);
 }
+function getSKU($codigo,$id_vendedor){
+    $obj_conexion = mysqli_connect(SERVER, USERDB, PASSDB, DATABASE);
+    if (!$obj_conexion) {
+        die('Error de conexión: ' . mysqli_connect_error(). ' ' .mysqli_connect_errno() );
+    }
 
-function addProduct($codigo,$nombre,$descripcion,$precio,$existencia,$id_vendedor){
+    $sql = "SELECT CONCAT('$codigo',COUNT(e.id) + 1) AS id FROM productos e where id_vendedor = '$id_vendedor' ORDER BY 1 desc limit 0,1 ";
+    $result = $obj_conexion->query($sql);
+    $data = $result->fetch_assoc();
+    $id = $data['id'];
+    $obj_conexion->close();
+    return $id;
+}
+
+function addProduct($idLocal,$codigo,$nombre,$descripcion,$precio,$existencia,$id_vendedor){
     $obj_conexion = mysqli_connect(SERVER, USERDB, PASSDB, DATABASE);
     if (!$obj_conexion) {
         die('Error de conexión: ' . mysqli_connect_error(). ' ' .mysqli_connect_errno() );
@@ -72,7 +92,7 @@ function addProduct($codigo,$nombre,$descripcion,$precio,$existencia,$id_vendedo
     $precio = floatvalue(trim($precio));
     $existencia = trim($existencia);
 
-    $sql = "INSERT INTO `productos` (`id`, `codigo`, `nombre`, `descripcion`, `precio`,`existencia`, `id_woo`, `id_vendedor`, `create_at`, `update_at`) VALUES (NULL, '$codigo', '$nombre', '$descripcion', '$precio','$existencia', NULL, '$id_vendedor',current_timestamp(),NULL)";
+    $sql = "INSERT INTO `productos` (`id`, `codigo`, `nombre`, `descripcion`, `precio`,`existencia`, `id_woo`, `id_vendedor`, `create_at`, `update_at`) VALUES ('$idLocal', '$codigo', '$nombre', '$descripcion', '$precio','$existencia', NULL, '$id_vendedor',current_timestamp(),NULL)";
 
     if ($obj_conexion->query($sql)) {
         $id = $obj_conexion->insert_id;
@@ -92,11 +112,11 @@ function findProduct($codigo,$id_vendedor){
         die('Error de conexión: ' . mysqli_connect_error(). ' ' .mysqli_connect_errno() );
     }
 
-    $sql = "SELECT * FROM productos WHERE codigo = '$codigo' AND id_vendedor = $id_vendedor";
+    $sql = "SELECT id FROM productos WHERE codigo = '$codigo' AND id_vendedor = $id_vendedor";
     $result = $obj_conexion->query($sql);
 
     if ($result->num_rows == 0) {
-        $id = 0;
+        $id = false;
     } else {
         $data = $result->fetch_assoc();
         $id = $data['id'];
@@ -114,16 +134,16 @@ function updateProduct($id,$codigo,$nombre,$descripcion,$precio,$existencia){
 
     $precio = floatvalue(trim($precio));
     $existencia = trim($existencia);
-    $sql = "UPDATE `productos` SET  `codigo` = '$codigo', `nombre` = '$nombre', `descripcion` = '$descripcion', `precio` = '$precio',`existencia` = '$existencia', `update_at` = current_timestamp() WHERE `id` = $id";
-
+    $sql = "UPDATE `productos` SET  `codigo` = '$codigo', `nombre` = '$nombre', `descripcion` = '$descripcion', `precio` = '$precio',`existencia` = '$existencia', `update_at` = current_timestamp() WHERE `id` = '$id'";
+    logMessage($sql);
     if ($obj_conexion->query($sql)) {
-        $sql = "SELECT * FROM productos WHERE `id` = $id";
+        $sql = "SELECT * FROM productos WHERE `id` = '$id'";
         $result = $obj_conexion->query($sql);
         $data = $result->fetch_assoc();
         $obj_conexion->close();
         return $data['id_woo'];
     } else  {
-        print_r("Error: " . $sql . "<br>" . $obj_conexion->error);
+        print_r("Error: " . $sql . "<br>" . $obj_conexion->error); exit;
         $obj_conexion->close();
         return false;
     }
@@ -191,7 +211,7 @@ function updateId_Woo($id_woo,$idLocal){
         die('Error de conexión: ' . mysqli_connect_error(). ' ' .mysqli_connect_errno() );
     }
 
-    $sql = "UPDATE `productos` SET `id_woo` = '$id_woo' WHERE `id` = $idLocal";
+    $sql = "UPDATE `productos` SET `id_woo` = '$id_woo' WHERE `id` = '$idLocal'";
 
     if ($obj_conexion->query($sql)) {
         $id = $obj_conexion ->affected_rows;
@@ -202,4 +222,23 @@ function updateId_Woo($id_woo,$idLocal){
         $obj_conexion->close();
         return false;
     }
+}
+
+function searchPila($list){
+    $obj_conexion = mysqli_connect(SERVER, USERDB, PASSDB, DATABASE);
+    if (!$obj_conexion) {
+        die('Error de conexión: ' . mysqli_connect_error(). ' ' .mysqli_connect_errno() );
+    }
+
+    $sql = "SELECT * FROM productos WHERE id IN ($list)";
+    
+    $result = $obj_conexion->query($sql);
+
+    if ($result->num_rows == 0) {
+        $data = false;
+    } else {
+        $data = $result;
+    }
+    $obj_conexion->close();
+    return $data;
 }
