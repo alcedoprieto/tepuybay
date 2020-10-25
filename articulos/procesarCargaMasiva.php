@@ -6,6 +6,7 @@
     if (!isset($_SESSION['user_email'])) {
         header('Location: ../login.php');
     }
+    $codigo = $_SESSION['codigo'];
     $user_id = $_SESSION['ID'];
     require_once ('../functions.php');
 
@@ -59,7 +60,6 @@ if (isset($_FILES['excel_file']) && $_FILES['excel_file']['error'] === UPLOAD_ER
                     ];
                     array_push($pilaUpdate, $producto);
                 } else {
-                    $codigo = 'VAL';
                     $idLocal = getSKU($codigo,$id_vendedor);
                     addProduct($idLocal,$codigoVendedor,$nombrePro,$descripPro,$precioPro,$existPro,$id_vendedor);
 
