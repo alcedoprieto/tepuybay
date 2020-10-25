@@ -205,7 +205,7 @@ function floatvalue($val){
                return floatval($val);
 }
 
-function updateId_Woo($id_woo,$idLocal){
+function updateId_Woo($id_woo,$idLocal,$idVendedor){
     $obj_conexion = mysqli_connect(SERVER, USERDB, PASSDB, DATABASE);
     if (!$obj_conexion) {
         die('Error de conexión: ' . mysqli_connect_error(). ' ' .mysqli_connect_errno() );
@@ -215,6 +215,8 @@ function updateId_Woo($id_woo,$idLocal){
 
     if ($obj_conexion->query($sql)) {
         $id = $obj_conexion ->affected_rows;
+        $sql = "UPDATE `wp_posts` SET `post_author` = '$idVendedor' WHERE `wp_posts`.`ID` = '$id_woo'";
+        $obj_conexion->query($sql);
         $obj_conexion->close();
         return $id;
     } else  {

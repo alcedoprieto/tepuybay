@@ -3,8 +3,10 @@
     ini_set('max_execution_time', 3000);
     set_time_limit(3000);
     header('Content-type: application/json; charset=utf-8');
-    if (!isset($_SESSION['user_email'])) {
+    if (!isset($_SESSION['user_email']) && !isset($_SESSION['ID'])) {
         header('Location: ../login.php');
+    } else {
+        $idVendedor = $_SESSION['ID'];
     }
 
     require_once ('../functions.php');
@@ -42,7 +44,7 @@
                 
             for($i = 0; $i <= count($arr["create"]); ++$i) {
                 if(!empty($arr["create"][$i]->id) && !empty($arr["create"][$i]->sku)){
-                    updateId_Woo($arr["create"][$i]->id,$arr["create"][$i]->sku);
+                    updateId_Woo($arr["create"][$i]->id,$arr["create"][$i]->sku,$idVendedor);
                 }
                 
             }
@@ -82,7 +84,7 @@
                
             for($i = 0; $i <= count($arr["update"]); ++$i) {
                 if(!empty($arr["update"][$i]->id) && !empty($arr["update"][$i]->sku)){
-                    updateId_Woo($arr["update"][$i]->id,$arr["update"][$i]->sku);
+                    updateId_Woo($arr["update"][$i]->id,$arr["update"][$i]->sku,$idVendedor);
                 }
                 
             }
