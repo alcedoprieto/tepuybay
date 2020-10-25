@@ -25,12 +25,19 @@ include("../layouts/topLayout.php");
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="row">
-                                        <div class="input-group mb-3">
+                                          
+                                            <div class="form-group">
+                                              <label for="filas">Numero de Articulos</label>
+                                              <input type="text" class="form-control" id="filas" name="filas" placeholder="Número de Filas">
+                                            </div>
+                                          
+                                            <div class="input-group mb-3">
                                                 <div class="custom-file">
                                                     <input type="file" class="custom-file-input" id="inputGroupFile01" name="excel_file" aria-describedby="inputGroupFileAddon01">
                                                     <label class="custom-file-label" for="inputGroupFile01">Seleccione</label>
                                                 </div>
-                                                </div>
+                                              </div>
+                                          
                                         </div>
                                         <div class="row">
                                         <input id="btnEnviar" type="submit" name="Upload" value="Enviar" class="btn btn-primary" />

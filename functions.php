@@ -149,7 +149,7 @@ function updateProduct($id,$codigo,$nombre,$descripcion,$precio,$existencia){
     }
 }
 
-function readExcel($archivo){
+function readExcel($archivo,$filas){
     require_once 'lib/PHPExcel/Classes/PHPExcel.php';
     
     $inputFileType = PHPExcel_IOFactory::identify($archivo);
@@ -168,7 +168,7 @@ function readExcel($archivo){
         }
         
     }
-    $row = 1;
+    $row = $filas;
     $bandera = true;
     do{
         for ($col = 'A'; $col <= $highestColumn; $col++){

@@ -18,6 +18,11 @@ if (isset($_FILES['excel_file']) && $_FILES['excel_file']['error'] === UPLOAD_ER
     $fileType = $_FILES['excel_file']['type'];
     $fileNameCmps = explode(".", $fileName);
     $fileExtension = strtolower(end($fileNameCmps));
+    if(!empty($_POST['filas']) && is_numeric($_POST['filas']) ){
+        $filas = $_POST['filas'];
+    } else {
+        $filas = 1;
+    }
 
     $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
 
@@ -27,7 +32,7 @@ if (isset($_FILES['excel_file']) && $_FILES['excel_file']['error'] === UPLOAD_ER
     if(move_uploaded_file($fileTmpPath, $dest_path))
     {
         $archivo = $uploadFileDir.$newFileName;
-        $data = readExcel($archivo);
+        $data = readExcel($archivo,$filas);
         $pilaUpdate = array();
         $pilaAdd = array();
         for($i = 2; $i <= count($data); ++$i) {
