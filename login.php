@@ -11,7 +11,7 @@
     $ID = $_POST['ID'];
     if ($_POST['boton'] != "") {  
 
-    $sql = "SELECT * FROM wp_users WHERE user_email='$user_email'";
+    $sql = "SELECT * FROM wp_users AS a join wp_usermeta AS b ON (a.id = b.user_id) WHERE a.user_email='$user_email' AND b.meta_key = 'dokan_enable_selling' AND b.meta_value = 'yes' ";
     $busqueda = $obj_conexion -> query($sql);
     $registro=mysqli_fetch_array($busqueda);
     mysqli_close($obj_conexion);
@@ -26,7 +26,7 @@
         $_SESSION['user_status'] = trim($registro["user_status"]);
         $_SESSION['user_pass'] = trim($registro["user_pass"]);
         $_SESSION['user_login'] = trim($registro["user_login"]);
-        $_SESSION['ID'] = trim($registro["ID"]);
+        $_SESSION['ID'] = trim($registro["user_id"]);
         $_SESSION['user_registered'] = trim($registro["user_registered"]);
         header('Location: index.php');
            }
