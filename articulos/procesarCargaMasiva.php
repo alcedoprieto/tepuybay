@@ -54,7 +54,7 @@ if (isset($_FILES['excel_file']) && $_FILES['excel_file']['error'] === UPLOAD_ER
                         'stock_quantity' => $existPro,
                         'categories' => [
                             [
-                                'id' => 119
+                                'id' => 69
                             ]
                         ],
                     ];
@@ -74,7 +74,7 @@ if (isset($_FILES['excel_file']) && $_FILES['excel_file']['error'] === UPLOAD_ER
                             'stock_quantity' => $existPro,
                             'categories' => [
                                 [
-                                    'id' => 119
+                                    'id' => 69
                                 ]
                             ],
                         ];

@@ -33,7 +33,7 @@
                     'stock_quantity' => $row['existencia'],
                     'categories' => [
                         [
-                            'id' => 119
+                            'id' => 69
                         ]
                     ],
                 ];
@@ -73,7 +73,7 @@
                     'stock_quantity' => $row['existencia'],
                     'categories' => [
                         [
-                            'id' => 119
+                            'id' => 69
                         ]
                     ],
                 ];
