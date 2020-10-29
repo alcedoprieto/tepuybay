@@ -179,7 +179,7 @@ include("../layouts/topLayout.php");
                       console.log( response ); 
                     });
                     */
-/*
+
                     $.getJSON( "sendCM.php", data )
                         .done(function( data, textStatus, jqXHR ) {
                             if ( console && console.log ) {
@@ -191,7 +191,7 @@ include("../layouts/topLayout.php");
                                 console.log( "Algo ha fallado: " +  textStatus );
                             }
                     });
-*/
+
                 }
             </script>
             <!-- END PAGE CONTAINER-->
