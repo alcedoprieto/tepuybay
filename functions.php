@@ -88,9 +88,11 @@ function addProduct($idLocal,$codigo,$nombre,$descripcion,$precio,$existencia,$i
     if (!$obj_conexion) {
         die('Error de conexión: ' . mysqli_connect_error(). ' ' .mysqli_connect_errno() );
     }
-
-    $precio = floatvalue(trim($precio));
-    $existencia = trim($existencia);
+    $codigo      = $obj_conexion->real_escape_string($codigo);
+    $nombre      = $obj_conexion->real_escape_string($nombre);
+    $descripcion = $obj_conexion->real_escape_string($descripcion);
+    $precio      = floatvalue(trim($precio));
+    $existencia  = trim($existencia);
 
     $sql = "INSERT INTO `productos` (`id`, `codigo`, `nombre`, `descripcion`, `precio`,`existencia`, `id_woo`, `id_vendedor`, `create_at`, `update_at`) VALUES ('$idLocal', '$codigo', '$nombre', '$descripcion', '$precio','$existencia', NULL, '$id_vendedor',current_timestamp(),NULL)";
 
@@ -131,7 +133,9 @@ function updateProduct($id,$codigo,$nombre,$descripcion,$precio,$existencia){
     if (!$obj_conexion) {
         die('Error de conexión: ' . mysqli_connect_error(). ' ' .mysqli_connect_errno() );
     }
-
+    $codigo      = $obj_conexion->real_escape_string($codigo);
+    $nombre      = $obj_conexion->real_escape_string($nombre);
+    $descripcion = $obj_conexion->real_escape_string($descripcion);
     $precio = floatvalue(trim($precio));
     $existencia = trim($existencia);
     $sql = "UPDATE `productos` SET  `codigo` = '$codigo', `nombre` = '$nombre', `descripcion` = '$descripcion', `precio` = '$precio',`existencia` = '$existencia', `update_at` = current_timestamp() WHERE `id` = '$id'";
