@@ -137,6 +137,7 @@ include("../layouts/topLayout.php");
                                     sendToWP(addArt,"add");
                                     i++;
                                     pivoteAdd = i * 100 - 1;
+                                    addArt.length = 0;
                                   }
                               });
                               if(jsonRes.update.length < 100){
@@ -150,6 +151,7 @@ include("../layouts/topLayout.php");
                                     sendToWP(upArt,"update" );
                                     j++;
                                     pivoteUp = j * 100 - 1;
+                                    upArt.length = 0;
                                   }
                               });
                           },
