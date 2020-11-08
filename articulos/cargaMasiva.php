@@ -131,9 +131,10 @@ include("../layouts/topLayout.php");
                               $.each(jsonRes.add, function(index, value){
                                   $("#artUpload tbody").append("<tr><th scope='row'>" + value.short_description + "</th><td>" + value.name + "</td><td>" + value.description + "</td><td>" + value.regular_price + "</td><td>" + value.stock_quantity + "</td></tr>");
                                   addArt.push(value.sku);
+
                                   //console.log(index);
                                   if(index == pivoteAdd){
-                                    console.log("Entro "+i);
+                                    console.log("Add "+i);
                                     sendToWP(addArt,"add");
                                     i++;
                                     pivoteAdd = i * 100 - 1;
@@ -147,7 +148,7 @@ include("../layouts/topLayout.php");
                                 $("#artUpload tbody").append("<tr><th scope='row'>" + value.short_description + "</th><td>" + value.name + "</td><td>" + value.description + "</td><td>" + value.regular_price + "</td><td>" + value.stock_quantity + "</td></tr>");
                                 upArt.push(value.sku);
                                 if(index == pivoteUp){
-                                    console.log("Entro "+i);
+                                    console.log("Update "+i);
                                     sendToWP(upArt,"update" );
                                     j++;
                                     pivoteUp = j * 100 - 1;
@@ -159,6 +160,7 @@ include("../layouts/topLayout.php");
                               /*
                               * Se ejecuta si la peticón ha sido erronea
                               * */
+                              console.log(data);
                               alert("Problemas al tratar de enviar el formulario");
                           }
                       });

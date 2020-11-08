@@ -44,7 +44,7 @@ if (isset($_FILES['excel_file']) && $_FILES['excel_file']['error'] === UPLOAD_ER
             $existPro = trim($data[$i]['4']);
             if(!empty($codigoVendedor) && !empty($id_vendedor) && !empty($nombrePro) && !empty($descripPro) && !empty($precioPro) && !empty($existPro)){
                 $idLocal = findProduct($codigoVendedor,$id_vendedor);
-
+                logMessage($idLocal);
                 if ($idLocal){
                     $id_woo = updateProduct($idLocal,$codigoVendedor,$nombrePro,$descripPro,$precioPro,$existPro);
                     $producto = [
