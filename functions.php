@@ -120,8 +120,9 @@ function findProduct($codigo,$id_vendedor){
     if ($result->num_rows == 0) {
         $id = false;
     } else {
-        $data = $result->fetch_assoc();
-        $id = $data['id'];
+        while ($data = $result->fetch_assoc()) {
+            $id = $data['id'];
+        }
     }
     $obj_conexion->close();
     return $id;
