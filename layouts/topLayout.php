@@ -35,7 +35,7 @@
     <link href="../css/styles.css" rel="stylesheet">
     <!-- Jquery JS-->
     <script src="../vendor/jquery-3.2.1.min.js"></script>
-    <script src="../lib/jquery.imageuploader.js"></script>
+    <script src="../js/jquery.imageuploader.js"></script>
 </head>
 
 <body class="animsition">
