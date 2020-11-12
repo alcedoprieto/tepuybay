@@ -179,18 +179,32 @@
 
             function uploadSubmitHandler () {
                 if (state.fileBatch.length !== 0) {
+                    tmpState = state;
                     var data = new FormData();
                     for (var i = 0; i < state.fileBatch.length; i++) {
-                        data.append('files[]', state.fileBatch[i].file, state.fileBatch[i].fileName);
+                        data.append('dataIndex', state.fileBatch[i].id);
+                        data.append('fileName', state.fileBatch[i].fileName);
+                        data.append('file', state.fileBatch[i].file, state.fileBatch[i].fileName);
+                        $.ajax({
+                            type: 'POST',
+                            url: options.ajaxUrl,
+                            data: data,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            complete:function(data){
+                                //console.log("Fin de Envio");
+                                res = data.responseJSON;
+                                console.log(" Respuesta: "+res.status);
+                                if(res.status == 'ok'){
+                                    $('li[data-index="'+res.dataIndex+'"]').css({"background-color":"#7dd57c"});
+                                } else {
+                                    $('li[data-index="'+res.dataIndex+'"]').css({"background-color":"#f75858"});
+                                } 
+                                
+                            }
+                        });
                     }
-                    $.ajax({
-                        type: 'POST',
-                        url: options.ajaxUrl,
-                        data: data,
-                        cache: false,
-                        contentType: false,
-                        processData: false
-                    });
                 }
             }
 

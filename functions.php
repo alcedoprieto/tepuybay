@@ -115,6 +115,7 @@ function findProduct($codigo,$id_vendedor){
     }
 
     $sql = "SELECT id FROM productos WHERE codigo = '$codigo' AND id_vendedor = $id_vendedor";
+    
     $result = $obj_conexion->query($sql);
 
     if ($result->num_rows == 0) {

@@ -22,6 +22,7 @@ include("../layouts/topLayout.php");
                     <h5 class="card-title display-55">Cargar Imágenes de Articulos</h5>
                     <hr class="bg-primary" />
           <section role="main">
+            
             <div class="uploader__box js-uploader__box l-center-box">
                 
             </div>
@@ -36,6 +37,7 @@ include("../layouts/topLayout.php");
 </div>
 <!-- FIN AREA DE TRABAJO-->
 <script type="text/javascript">
+    var tmpState;
     var options = {
       instructionsCopy: "Seleccione las images de sus artículos",
       submitButtonCopy: "Enviar Imagenes",
