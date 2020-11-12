@@ -32,8 +32,10 @@
 
     <!-- Main CSS-->
     <link href="../css/theme.css" rel="stylesheet" media="all">
+    <link href="../css/styles.css" rel="stylesheet">
     <!-- Jquery JS-->
     <script src="../vendor/jquery-3.2.1.min.js"></script>
+    <script src="../lib/jquery.imageuploader.js"></script>
 </head>
 
 <body class="animsition">
