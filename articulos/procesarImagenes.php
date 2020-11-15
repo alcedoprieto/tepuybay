@@ -15,7 +15,8 @@
     logMessage(json_encode($_POST));
     logMessage(json_encode($_FILES));
 
-    $fileName = $_FILES['file']['name'];
+    //$fileName = $_FILES['file']['name'];
+    $fileName = $_POST['fileName'];
     $fileNameCmps = explode(".", $fileName);
     $codigoVendedor = $fileNameCmps[0];
 

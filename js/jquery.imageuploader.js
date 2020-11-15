@@ -151,6 +151,30 @@
                     .append(removeLink);
 
                 dom.fileList.append(listItem);
+
+                var data = new FormData();
+                data.append('dataIndex', id);
+                data.append('fileName', fileName);
+                //data.append('file', state.fileBatch[i].file, state.fileBatch[i].fileName);
+                $.ajax({
+                    type: 'POST',
+                    url: options.ajaxUrl,
+                    data: data,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    complete:function(data){
+                        //console.log("Fin de Envio");
+                        res = data.responseJSON;
+                        console.log(" Respuesta: "+res.status);
+                        if(res.status == 'ok'){
+                            $('li[data-index="'+res.dataIndex+'"]').css({"background-color":"#7dd57c"});
+                        } else {
+                            $('li[data-index="'+res.dataIndex+'"]').css({"background-color":"#f75858"});
+                        } 
+                        
+                    }
+                });
             }
 
             function getExtension (path) {
