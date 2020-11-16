@@ -112,7 +112,7 @@
 
                 state.listIndex++;
 
-                var listItem = $('<li class="uploader__file-list__item" data-index="' + id + '"></li>');
+                var listItem = $('<li class="uploader__file-list__item" valid="0" data-index="' + id + '"></li>');
                 var thumbnailContainer = $('<span class="uploader__file-list__thumbnail"></span>');
                 var thumbnail = $('<img class="thumbnail"><i class="fa fa-spinner fa-spin uploader__icon--spinner"></i>');
                 var removeLink = $('<span class="uploader__file-list__button"><button class="uploader__icon-button js-upload-remove-button fa fa-times" data-index="' + id + '"></button></span>');
@@ -169,6 +169,7 @@
                         console.log(" Respuesta: "+res.status);
                         if(res.status == 'ok'){
                             $('li[data-index="'+res.dataIndex+'"]').css({"background-color":"#7dd57c"});
+                            $('li[data-index="'+res.dataIndex+'"]').attr("valid", "1");
                         } else {
                             $('li[data-index="'+res.dataIndex+'"]').css({"background-color":"#f75858"});
                         } 
@@ -204,30 +205,33 @@
             function uploadSubmitHandler () {
                 if (state.fileBatch.length !== 0) {
                     tmpState = state;
-                    var data = new FormData();
+                    
                     for (var i = 0; i < state.fileBatch.length; i++) {
-                        data.append('dataIndex', state.fileBatch[i].id);
-                        data.append('fileName', state.fileBatch[i].fileName);
-                        data.append('file', state.fileBatch[i].file, state.fileBatch[i].fileName);
-                        $.ajax({
-                            type: 'POST',
-                            url: options.ajaxUrl,
-                            data: data,
-                            cache: false,
-                            contentType: false,
-                            processData: false,
-                            complete:function(data){
-                                //console.log("Fin de Envio");
-                                res = data.responseJSON;
-                                console.log(" Respuesta: "+res.status);
-                                if(res.status == 'ok'){
-                                    $('li[data-index="'+res.dataIndex+'"]').css({"background-color":"#7dd57c"});
-                                } else {
-                                    $('li[data-index="'+res.dataIndex+'"]').css({"background-color":"#f75858"});
-                                } 
-                                
-                            }
-                        });
+                        if($('li[data-index="'+i+'"]').attr("valid") == "1"){
+                            var data = new FormData();
+                            data.append('dataIndex', state.fileBatch[i].id);
+                            data.append('fileName', state.fileBatch[i].fileName);
+                            data.append('file', state.fileBatch[i].file, state.fileBatch[i].fileName);
+                            $.ajax({
+                                type: 'POST',
+                                url: options.ajaxUrl,
+                                data: data,
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                complete:function(data){
+                                    //console.log("Fin de Envio");
+                                    res = data.responseJSON;
+                                    console.log(" Respuesta: "+res.status);
+                                    if(res.status == 'ok'){
+                                        $('li[data-index="'+res.dataIndex+'"]').css({"background-color":"#7ca0d5"});
+                                    } else {
+                                        $('li[data-index="'+res.dataIndex+'"]').css({"background-color":"#f75858"});
+                                    } 
+                                    
+                                }
+                            });
+                        }
                     }
                 }
             }

@@ -15,19 +15,38 @@
     logMessage(json_encode($_POST));
     logMessage(json_encode($_FILES));
 
-    //$fileName = $_FILES['file']['name'];
-    $fileName = $_POST['fileName'];
-    $fileNameCmps = explode(".", $fileName);
-    $codigoVendedor = $fileNameCmps[0];
+    //
+    if(isset($_FILES['file']['name'])){
+        $fileName = $_FILES['file']['name'];
+        $fileTmpPath = $_FILES['file']['tmp_name'];
+        $uploadFileDir = './uploaded_files/';
+        $dest_path = $uploadFileDir . $fileName;
+        move_uploaded_file($fileTmpPath, $dest_path);
 
-    $idLocal = findProduct($codigoVendedor,$idVendedor);
-    logMessage($idLocal);
-    if ($idLocal){
-        $arr = array('status' => 'ok', 'dataIndex' => $_POST['dataIndex']);
-        
+        $fileNameCmps = explode(".", $fileName);
+        $codigoVendedor = $fileNameCmps[0];
+    
+        $id_woo = findIdWoo($codigoVendedor,$idVendedor);
+        $url = URL_STORE."/panel/articulos/uploaded_files/".$fileName;
+        $res = addImage($id_woo,$url);
+        $arr = array('status' => 'ok', 'dataIndex' => $_POST['dataIndex'], 'data' => $res);
+
+    } else if(isset($_POST['fileName'])){
+        $fileName = $_POST['fileName'];
+        $fileNameCmps = explode(".", $fileName);
+        $codigoVendedor = $fileNameCmps[0];
+    
+        $idLocal = findProduct($codigoVendedor,$idVendedor);
+        logMessage($idLocal);
+        if ($idLocal){
+            $arr = array('status' => 'ok', 'dataIndex' => $_POST['dataIndex']);
+            
+        } else {
+            $arr = array('status' => 'err', 'dataIndex' => $_POST['dataIndex']);
+            
+        }
     } else {
-        $arr = array('status' => 'err', 'dataIndex' => $_POST['dataIndex']);
-        
+        $arr = array('status' => 'err');
     }
 
     echo json_encode($arr);

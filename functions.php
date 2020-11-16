@@ -250,3 +250,40 @@ function searchPila($list){
     $obj_conexion->close();
     return $data;
 }
+
+function addImage($id_woo,$url){
+    $woocommerce = new Client(URL_STORE, CK_STORE ,CS_STORE,[ 'wp_api' => true, 'version' => 'wc/v3']);
+    
+    $data = [
+        'images' => [
+            [
+                'src' => $url
+            ]
+        ],
+
+    ];
+    return $woocommerce->post("products/$id_woo", $data);
+}
+
+function findIdWoo($codigo,$id_vendedor){
+
+    $obj_conexion = mysqli_connect(SERVER, USERDB, PASSDB, DATABASE);
+    if (!$obj_conexion) {
+        die('Error de conexión: ' . mysqli_connect_error(). ' ' .mysqli_connect_errno() );
+    }
+
+    $sql = "SELECT id_woo FROM productos WHERE codigo = '$codigo' AND id_vendedor = $id_vendedor";
+    
+    $result = $obj_conexion->query($sql);
+
+    if ($result->num_rows == 0) {
+        $id = false;
+    } else {
+        while ($data = $result->fetch_assoc()) {
+            $id = $data['id_woo'];
+        }
+    }
+    $obj_conexion->close();
+    return $id;
+
+}
