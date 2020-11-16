@@ -28,8 +28,13 @@
     
         $id_woo = findIdWoo($codigoVendedor,$idVendedor);
         $url = URL_STORE."/panel/articulos/uploaded_files/".$fileName;
-        $res = addImage($id_woo,$url);
-        $arr = array('status' => 'ok', 'dataIndex' => $_POST['dataIndex'], 'data' => $res);
+        if($id_woo){
+            $res = addImage($id_woo,$url);
+            $arr = array('status' => 'ok', 'dataIndex' => $_POST['dataIndex'], 'data' => $res);
+        } else {
+            $arr = array('status' => 'err', 'dataIndex' => $_POST['dataIndex'], 'id_woo' => $id_woo);
+        }
+
 
     } else if(isset($_POST['fileName'])){
         $fileName = $_POST['fileName'];
