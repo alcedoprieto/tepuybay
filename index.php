@@ -264,7 +264,10 @@
 
     <!-- Main JS-->
     <script src="js/main.js"></script>
-
+    <script>
+        $.get("articulos/updateIdWoo.php");
+    </script>
+    
 </body>
 
 </html>
