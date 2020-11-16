@@ -27,12 +27,13 @@
             $sql = "SELECT post_id FROM wp_postmeta WHERE meta_value ='$id'";
             logMessage($sql);
             $resultado = $obj_conexion->query($sql);
-            $fila = $resultado->fetch_assoc();
-            
-            $sql = "UPDATE productos SET id_woo = ".$fila['post_id']." WHERE id = '$id'";
-            logMessage($sql);
-            $resultado = $obj_conexion->query($sql);
-            logMessage(serialize($resultado));
+            if ($resultado->num_rows > 0) {
+                $fila = $resultado->fetch_assoc();
+                $sql = "UPDATE productos SET id_woo = ".$fila['post_id']." WHERE id = '$id'";
+                logMessage($sql);
+                $resultado = $obj_conexion->query($sql);
+                logMessage(serialize($resultado));
+            }
         }
     }
     $obj_conexion->close();
