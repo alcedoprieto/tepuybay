@@ -17,7 +17,12 @@ function logMessage($mensaje){
 
 function addBashProduct($pila){
     $woocommerce = new Client(URL_STORE, CK_STORE ,CS_STORE,[ 'wp_api' => true, 'version' => 'wc/v3','timeout' => 60]);
+    $data = [
+        'create' => $pila
+    ];
     
+    return $woocommerce->post('products/batch', $data);  
+    /*
     if(count($pila) <= 100){
         $data = [
             'create' => $pila
@@ -34,12 +39,17 @@ function addBashProduct($pila){
         }
         return $res;
     }
-
+    */
 }
 
 function updateBashProduct($pila){
     $woocommerce = new Client(URL_STORE, CK_STORE ,CS_STORE,[ 'wp_api' => true, 'version' => 'wc/v3' ]);
-
+    $data = [
+        'create' => [],
+        'update' => $pila
+    ];
+    return $woocommerce->post('products/batch', $data);  
+    /*
     if(count($pila) <= 100){
         $data = [
             'create' => [],
@@ -48,6 +58,7 @@ function updateBashProduct($pila){
         //print_r($data); exit();
         return $woocommerce->post('products/batch', $data);        
     }
+    */
 }
 
 function addSingleProduct($sku,$nomPro,$prePro,$desPro,$codPro,$catPro){
