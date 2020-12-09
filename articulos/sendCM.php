@@ -15,7 +15,7 @@
     $pilaAdd = array();
     $pilaUpdate = array();
 
-    if( isset($_GET['add']) && count($_GET['add']) > 0 ) {
+    if( !empty($_GET['add']) ) {
         $pila = $_GET['add'];
         $pila = substr($pila, 1, -1);
         $pila = searchPila($pila);
@@ -54,7 +54,7 @@
             $jsondata['message'] = count($pilaAdd)." Productos agregado";
             echo json_encode($jsondata);
         }   
-    } else if( isset($_GET['update']) && count($_GET['update']) > 0 ){
+    } else if( !empty($_GET['update']) ){
         $pila = $_GET['update'];
         $pila = substr($pila, 1, -1);
         $pila = searchPila($pila);
