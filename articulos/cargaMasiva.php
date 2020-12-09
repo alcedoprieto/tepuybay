@@ -96,6 +96,8 @@ include("../layouts/topLayout.php");
               var j = 1;
               var addArt =  new Array();
               var upArt =  new Array();
+              var pivoteUpMax = 0;
+              var pivoteAddMax = 0;
               $(document).ready(function () {
                   $("#formCargaMasiva").bind("submit",function(){
                       // Capturamnos el boton de envío
@@ -127,13 +129,15 @@ include("../layouts/topLayout.php");
                               jsonRes = data.responseJSON;
                               if(jsonRes.add.length < 100){
                                 pivoteAdd = jsonRes.add.length -1;
+                              }else{
+                                pivoteAddMax = jsonRes.add.length -1;
                               }
                               $.each(jsonRes.add, function(index, value){
                                   $("#artUpload tbody").append("<tr><th scope='row'>" + value.short_description + "</th><td>" + value.name + "</td><td>" + value.description + "</td><td>" + value.regular_price + "</td><td>" + value.stock_quantity + "</td></tr>");
                                   addArt.push(value.sku);
 
                                   //console.log(index);
-                                  if(index == pivoteAdd || index == (jsonRes.add.length -1)){
+                                  if(index == pivoteAdd || index == pivoteAddMax){
                                     console.log("Add "+i);
                                     sendToWP(addArt,"add");
                                     i++;
@@ -143,11 +147,13 @@ include("../layouts/topLayout.php");
                               });
                               if(jsonRes.update.length < 100){
                                 pivoteUp = jsonRes.update.length -1;
+                              }else{
+                                pivoteUpMax = jsonRes.update.length -1;
                               }
                               $.each(jsonRes.update, function(index, value){
                                 $("#artUpload tbody").append("<tr><th scope='row'>" + value.short_description + "</th><td>" + value.name + "</td><td>" + value.description + "</td><td>" + value.regular_price + "</td><td>" + value.stock_quantity + "</td></tr>");
                                 upArt.push(value.sku);
-                                if(index == pivoteUp || index == (jsonRes.update.length -1)){
+                                if(index == pivoteUp || index == pivoteUpMax){
                                     console.log("Update "+i);
                                     sendToWP(upArt,"update" );
                                     j++;
