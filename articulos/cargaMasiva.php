@@ -133,7 +133,7 @@ include("../layouts/topLayout.php");
                                   addArt.push(value.sku);
 
                                   //console.log(index);
-                                  if(index == pivoteAdd){
+                                  if(index == pivoteAdd || index == (jsonRes.add.length -1)){
                                     console.log("Add "+i);
                                     sendToWP(addArt,"add");
                                     i++;
@@ -147,7 +147,7 @@ include("../layouts/topLayout.php");
                               $.each(jsonRes.update, function(index, value){
                                 $("#artUpload tbody").append("<tr><th scope='row'>" + value.short_description + "</th><td>" + value.name + "</td><td>" + value.description + "</td><td>" + value.regular_price + "</td><td>" + value.stock_quantity + "</td></tr>");
                                 upArt.push(value.sku);
-                                if(index == pivoteUp){
+                                if(index == pivoteUp || index == (jsonRes.update.length -1)){
                                     console.log("Update "+i);
                                     sendToWP(upArt,"update" );
                                     j++;
