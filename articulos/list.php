@@ -2,7 +2,7 @@
 session_start();
 require_once ('../conexion.php');
 
-$sql ="SELECT * FROM `wpzz_posts` WHERE post_author =".$_SESSION['ID'];
+$sql ="SELECT * FROM `wp_posts` WHERE post_author =".$_SESSION['ID'];
 
 $result = $obj_conexion -> query($sql);
 while($row = mysqli_fetch_array($result))
