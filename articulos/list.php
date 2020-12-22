@@ -2,12 +2,19 @@
 session_start();
 require_once ('../conexion.php');
 
-$sql ="SELECT * FROM `wp_posts` WHERE post_author =".$_SESSION['ID'];
+$sql ="SELECT id,post_excerpt,post_title,post_content FROM `wp_posts` WHERE post_status = 'publish' AND post_author =".$_SESSION['ID'];
 
 $result = $obj_conexion -> query($sql);
+$articulos = array();
 while($row = mysqli_fetch_array($result))
 {
-	$articulos[] = $row;
+	$producto = [
+		'id' => $row['id'],
+		'codigo' => $row['post_excerpt'],
+		'title' => $row['post_title'],
+		'conten' => $row['post_content']
+	];
+	array_push($articulos, $producto);
 }
 //obtener el detalle de un producto por el api
 // echo json_encode($woocommerce->get('products/2000')); 

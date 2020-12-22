@@ -85,11 +85,14 @@
                                 <li>
                                     <a href="../articulos/list.php">listar</a>
                                 </li>
-                                <li>
-                                    <a href="../articulos/nuevo.php">Nuevo</a>
-                                </li>
+                                <!--li>
+                                    < a href="../articulos/nuevo.php">Nuevo</a>
+                                </li -->
                                 <li>
                                     <a href="../articulos/cargaMasiva.php">Carga Masiva</a>
+                                </li>
+                                <li>
+                                    <a href="../articulos/cargaImagenes.php">Cargar Imágenes</a>
                                 </li>
                             </ul>
                         </li>
