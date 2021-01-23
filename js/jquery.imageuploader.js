@@ -212,10 +212,13 @@
                             data.append('dataIndex', state.fileBatch[i].id);
                             data.append('fileName', state.fileBatch[i].fileName);
                             data.append('file', state.fileBatch[i].file, state.fileBatch[i].fileName);
+                            setInterval(function(){
                             $.ajax({
                                 type: 'POST',
                                 url: options.ajaxUrl,
+                                timeout:60000,
                                 data: data,
+                                async:false,
                                 cache: false,
                                 contentType: false,
                                 processData: false,
@@ -228,9 +231,10 @@
                                     } else {
                                         $('li[data-index="'+res.dataIndex+'"]').css({"background-color":"#f75858"});
                                     } 
-                                    
+                                    return true;
                                 }
                             });
+                        }, (i*100));
                         }
                     }
                 }
