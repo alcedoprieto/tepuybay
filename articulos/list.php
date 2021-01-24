@@ -18,9 +18,9 @@ while($row = mysqli_fetch_array($result))
 }
 //obtener el detalle de un producto por el api
 
-use Automattic\WooCommerce\Client;
+/*use Automattic\WooCommerce\Client;
 $woocommerce = new Client(URL_STORE, CK_STORE ,CS_STORE,[ 'wp_api' => true, 'version' => 'wc/v3','timeout' => 600, 'verify_ssl' => false]);
-echo $woocommerce->get('products'); 
+echo $woocommerce->get('products'); */
 //echo json_encode($articulos);
 include("../layouts/topLayout.php"); 
 ?>

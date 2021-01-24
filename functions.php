@@ -9,7 +9,8 @@ use Automattic\WooCommerce\Client;
 function logMessage($mensaje){
         $date = date("F j, Y, g:i a");
         $myfile = fopen("logs-".date('m-Y').".log", "a") or die("Unable to open file!");
-        fwrite($myfile, $date."\t".$_SERVER['SCRIPT_NAME']."\t->\t".$mensaje."\n");
+        //fwrite($myfile, $date."\t".$_SERVER['SCRIPT_NAME']."\t->\t".$mensaje."\n");
+        fwrite($myfile,"\t->\t".$mensaje."\n");
         fclose($myfile);
         return("true");
 }
