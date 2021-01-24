@@ -1,9 +1,9 @@
 <?php
 session_start();
 require_once ('../conexion.php');
-
+require_once ('../functions.php');
 $sql ="SELECT id,post_excerpt,post_title,post_content FROM `wp_posts` WHERE post_status = 'publish' AND post_author =".$_SESSION['ID'];
-
+logMessage($sql);
 $result = $obj_conexion -> query($sql);
 $articulos = array();
 while($row = mysqli_fetch_array($result))
@@ -17,7 +17,10 @@ while($row = mysqli_fetch_array($result))
 	array_push($articulos, $producto);
 }
 //obtener el detalle de un producto por el api
-// echo json_encode($woocommerce->get('products/2000')); 
+
+use Automattic\WooCommerce\Client;
+$woocommerce = new Client(URL_STORE, CK_STORE ,CS_STORE,[ 'wp_api' => true, 'version' => 'wc/v3','timeout' => 600, 'verify_ssl' => false]);
+echo $woocommerce->get('products'); 
 //echo json_encode($articulos);
 include("../layouts/topLayout.php"); 
 ?>

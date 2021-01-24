@@ -1,7 +1,7 @@
 <?php
     session_start();
-    ini_set('max_execution_time', 3000);
-    set_time_limit(3000);
+    ini_set('max_execution_time', 600000);
+    set_time_limit(600000);
     header('Content-Type: application/json');
     if (!isset($_SESSION['user_email'])) {
         header('Location: ../login.php');
@@ -38,14 +38,14 @@ if (isset($_FILES['excel_file']) && $_FILES['excel_file']['error'] === UPLOAD_ER
         for($i = 2; $i <= count($data); ++$i) {
             $codigoVendedor = trim($data[$i]['0']);
             $id_vendedor = $user_id;
-            $nombrePro = trim($data[$i]['1']);
-            $descripPro = trim($data[$i]['2']);
-            $precioPro = trim($data[$i]['3']);
-            $existPro = trim($data[$i]['4']);
-            if(!empty($codigoVendedor) && !empty($id_vendedor) && !empty($nombrePro) && !empty($descripPro) && !empty($precioPro) && !empty($existPro)){
+            $nombrePro = utf8_encode(trim($data[$i]['1']));
+            $descripPro = utf8_encode (trim($data[$i]['2']));
+            $precioPro = utf8_encode (trim($data[$i]['3']));
+            $existPro = utf8_encode (trim($data[$i]['4']));
+            if(!empty($codigoVendedor) && !empty($id_vendedor) && !empty($nombrePro) && !empty($descripPro) && is_numeric($precioPro) && is_numeric($existPro)){
                 $idLocal = findProduct($codigoVendedor,$id_vendedor);
                 logMessage($idLocal);
-                if ($idLocal){
+                if (!empty($idLocal)){
                     $id_woo = updateProduct($idLocal,$codigoVendedor,$nombrePro,$descripPro,$precioPro,$existPro);
                     $producto = [
                         'id' => $id_woo,
@@ -88,6 +88,7 @@ if (isset($_FILES['excel_file']) && $_FILES['excel_file']['error'] === UPLOAD_ER
             } // Fin if Verifica existencia de contenido
         } // Fin For
         $arr = array('add' => $pilaAdd, 'update' => $pilaUpdate);
+        logMessage(serialize($arr));
         echo json_encode($arr);
     }
     else

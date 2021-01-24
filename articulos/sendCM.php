@@ -1,7 +1,7 @@
 <?php
     session_start();
-    ini_set('max_execution_time', 3000);
-    set_time_limit(3000);
+    ini_set('max_execution_time', 600000);
+    set_time_limit(600000);
     header('Content-type: application/json; charset=utf-8');
     if (!isset($_SESSION['user_email']) && !isset($_SESSION['ID'])) {
         header('Location: ../login.php');

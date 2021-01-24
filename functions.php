@@ -16,12 +16,14 @@ function logMessage($mensaje){
 
 
 function addBashProduct($pila){
-    $woocommerce = new Client(URL_STORE, CK_STORE ,CS_STORE,[ 'wp_api' => true, 'version' => 'wc/v3','timeout' => 60]);
+    $woocommerce = new Client(URL_STORE, CK_STORE ,CS_STORE,[ 'wp_api' => true, 'version' => 'wc/v3','timeout' => 600]);
     $data = [
         'create' => $pila
     ];
-    
-    return $woocommerce->post('products/batch', $data);  
+    logMessage(serialize($data));
+    $tmp = $woocommerce->post('products/batch', $data);  
+    logMessage(serialize($tmp));
+    return $tmp;
     /*
     if(count($pila) <= 100){
         $data = [
@@ -106,11 +108,11 @@ function addProduct($idLocal,$codigo,$nombre,$descripcion,$precio,$existencia,$i
     $existencia  = trim($existencia);
 
     $sql = "INSERT INTO `productos` (`id`, `codigo`, `nombre`, `descripcion`, `precio`,`existencia`, `id_woo`, `id_vendedor`, `create_at`, `update_at`) VALUES ('$idLocal', '$codigo', '$nombre', '$descripcion', '$precio','$existencia', NULL, '$id_vendedor',current_timestamp(),NULL)";
-
+    logMessage($sql);
     if ($obj_conexion->query($sql)) {
-        $id = $obj_conexion->insert_id;
+        logMessage($obj_conexion->affected_rows);
         $obj_conexion->close();
-        return $id;
+        return $idLocal;
     } else  {
         print_r("Error: " . $sql . "<br>" . $obj_conexion->error);
         $obj_conexion->close();
@@ -126,7 +128,7 @@ function findProduct($codigo,$id_vendedor){
     }
 
     $sql = "SELECT id FROM productos WHERE codigo = '$codigo' AND id_vendedor = $id_vendedor";
-    
+    logMessage($sql);
     $result = $obj_conexion->query($sql);
 
     if ($result->num_rows == 0) {
@@ -250,7 +252,7 @@ function searchPila($list){
     }
 
     $sql = "SELECT * FROM productos WHERE id IN ($list)";
-    
+    logMessage($sql);
     $result = $obj_conexion->query($sql);
 
     if ($result->num_rows == 0) {
