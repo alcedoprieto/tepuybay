@@ -19,7 +19,7 @@ include("../layouts/topLayout.php");
                  <div class="col-lg-12">
 
                     <div class="card">
-                        <div class="card-header">Crear Articulos por Lotes</div>
+                        <div class="card-header">Crear Articulos por Lotes <div style="text-align: right;"><a href="uploaded_files\plantilla.xlsx"> plantilla de excel</a></div> </div>
                         <div class="card-body">
                             <form id="formCargaMasiva" method="post" action="procesarCargaMasiva.php" enctype="multipart/form-data">
                                 <div class="row">
