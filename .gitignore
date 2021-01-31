@@ -13,3 +13,4 @@ conexion.php
 error_log
 articulos/uploaded_files
 *.zip
+img/

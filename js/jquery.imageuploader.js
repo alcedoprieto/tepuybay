@@ -217,6 +217,8 @@
                                 url: options.ajaxUrl,
                                 data: data,
                                 cache: false,
+                                
+                                async:false,
                                 contentType: false,
                                 processData: false,
                                 complete:function(data){
@@ -229,7 +231,8 @@
                                         $('li[data-index="'+res.dataIndex+'"]').css({"background-color":"#f75858"});
                                     } 
                                     
-                                }
+                                },
+                                timeout:60000
                             });
                         }
                     }

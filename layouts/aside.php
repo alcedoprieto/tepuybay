@@ -11,26 +11,8 @@
                             <a class="js-arrow" href="index.php">
                                 <i class="fas fa-tachometer-alt"></i>Tepuy Shop</a>                                
                         </li>
-                        <li class="has-sub">
-                            <a class="js-arrow" href="#">
-                                <i class="fas fa-copy"></i>Editar Datos</a>
-                            <ul class="list-unstyled navbar__sub-list js-sub-list">
-                                <li>
-                                    <a href="basicos/editar_contrasena.php">Contraseña</a>
-                                </li>
-                                <li>
-                                    <a href="basicos/editar_datos.php">Datos de Usuario</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fas fa-calendar-alt"></i>Tickets</a>
-                        </li>
-                        <li>
-                            <a href="basicos/seguimiento.php">
-                                <i class="fas fa-calendar-alt"></i>Pedido</a>
-                        </li>
+                        
+                        
                         <li class="has-sub">
                             <a class="js-arrow" href="#">
                                 <i class="fas fa-copy"></i>Articulos</a>

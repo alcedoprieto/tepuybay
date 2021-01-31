@@ -1231,10 +1231,17 @@ section {
 .header-desktop .notifi-dropdown {
     top: 51px;
 }
+@media (max-width: 400px){
+.logo {
+        width: 25%;
+ }
+}
+
 
 @media (max-width: 991px) {
     .logo {
         text-align: center;
+        width: 33%;
     }
 }
 
@@ -1403,6 +1410,7 @@ section {
 
 .account-wrap {
     position: relative;
+    left: 50%;
 }
 
 .account-item {
@@ -1410,7 +1418,7 @@ section {
 }
 
 .account-item .image {
-    width: 45px;
+    width: 53px;
     height: 45px;
     float: left;
     overflow: hidden;

@@ -10,7 +10,7 @@
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
-                                            <img src="../images/icon/logo_lit.png" alt="John Doe" />
+                                            <img src="images/icon/logo.png" alt="TepuyBay" />
                                         </div>
                                         <div class="content">
                                             <a class="js-acc-btn" href="#">Cliente</a>
@@ -19,7 +19,7 @@
                                             <div class="info clearfix">
                                                 <div class="image">
                                                     <a href="#">
-                                                        <img src="../images/icon/logo_lit.png" alt="John Doe" />
+                                                        <img src="images/icon/logo.png" alt="TepuyBay" />
                                                     </a>
                                                 </div>
                                                 <div class="content">
