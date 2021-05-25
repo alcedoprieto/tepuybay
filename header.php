@@ -12,7 +12,7 @@ session_start();
     $mrreg = $_SESSION['user_registered'];
     $mrid= $_SESSION['ID'];
 
-    $strQuery4= "SELECT * FROM wpck_usermeta WHERE (user_id = '$mrid') AND (meta_key = 'wpck_capabilities')";
+    $strQuery4= "SELECT * FROM wp_usermeta WHERE (user_id = '$mrid') AND (meta_key = 'wpck_capabilities')";
     $strResultado4 = $obj_conexion->query($strQuery4);
     $strDatos4 = mysqli_fetch_array($strResultado4);
     $meta_key = $strDatos4['meta_key'];  

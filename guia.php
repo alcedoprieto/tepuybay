@@ -74,7 +74,7 @@
         <!-- END HEADER MOBILE-->
 
         <!-- MENU SIDEBAR-->
-        <?php include("aside.php"); ?>
+        <?php include("layouts/aside.php"); ?>
         <!-- END MENU SIDEBAR-->
 
         <!-- CONTENIDO DE PAGINA-->

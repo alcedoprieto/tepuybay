@@ -65,6 +65,9 @@
                                 <i class="fas fa-copy"></i>Articulos</a>
                             <ul class="list-unstyled navbar__sub-list js-sub-list">
                                 <li>
+                                    <a href="../articulos/factor.php">Factor</a>
+                                </li>
+                                <li>
                                     <a href="../articulos/list.php">listar</a>
                                 </li>
                                 <!--li>
