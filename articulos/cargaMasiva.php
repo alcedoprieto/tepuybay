@@ -11,6 +11,49 @@ require_once ('../conexion.php');
 include("../layouts/topLayout.php"); 
 ?>
 <!-- AREA DE TRABAJO-->
+<style>
+   .spinner {
+  margin: 100px auto 0;
+  width: 70px;
+  text-align: center;
+}
+
+.spinner > div {
+  width: 18px;
+  height: 18px;
+  background-color: #dd9933;
+
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+  0%, 80%, 100% { -webkit-transform: scale(0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% { 
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  } 40% { 
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
+  }
+}
+</style>
 <div class="main-content">
     <div class="section__content section__content--p30">
         <div class="container-fluid">
@@ -21,6 +64,12 @@ include("../layouts/topLayout.php");
                     <div class="card">
                         <div class="card-header">Crear Articulos por Lotes <div style="text-align: right;"><a href="uploaded_files\plantilla.xlsx"> plantilla de excel</a></div> </div>
                         <div class="card-body">
+                           <div class="alert alert-success alert-dismissible fade show" role="alert" id="alertCargaMasiva" style="display: none;">
+                                 <strong>¡La carga masiva ha sido exitosa!</strong> 
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                             </button>
+                                                </div>
                             <form id="formCargaMasiva" method="post" action="procesarCargaMasiva.php" enctype="multipart/form-data">
                                 <div class="row">
                                     <div class="col-12">
@@ -34,7 +83,8 @@ include("../layouts/topLayout.php");
                                             <div class="input-group mb-3">
                                                 <div class="custom-file">
                                                     <input type="file" class="custom-file-input" id="inputGroupFile01" name="excel_file" aria-describedby="inputGroupFileAddon01">
-                                                    <label class="custom-file-label" for="inputGroupFile01">Seleccione</label>
+                                                    <label  id="labelFile" class="custom-file-label" for="inputGroupFile01">Seleccione</label>
+                                                    
                                                 </div>
                                               </div>
                                           
@@ -84,6 +134,15 @@ include("../layouts/topLayout.php");
     </div>
   </div>
 </section>
+<div class="modal fade" id="modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="spinner">
+		  <div class="bounce1"></div>
+		  <div class="bounce2"></div>
+		  <div class="bounce3"></div>
+		</div>
+	  </div>
+	</div>
         </div>
     </div>
 </div>
@@ -98,6 +157,14 @@ include("../layouts/topLayout.php");
               var upArt =  new Array();
               var pivoteUpMax = 0;
               var pivoteAddMax = 0;
+              const inputFile = document.getElementById('inputGroupFile01');
+              const labelFile = document.getElementById('labelFile');
+              const alertCargaMasiva = document.getElementById('alertCargaMasiva');
+              
+              inputFile.addEventListener('change', () => {
+                labelFile.innerText = inputFile.files[0].name;
+              });
+              
               $(document).ready(function () {
                   $("#formCargaMasiva").bind("submit",function(){
                       // Capturamnos el boton de envío
@@ -109,6 +176,7 @@ include("../layouts/topLayout.php");
                           contentType: false,
                           cache: false,
                           processData: false,
+                          
                           //data:$(this).serializeArray(),
                           beforeSend: function(){
                               /*
@@ -118,6 +186,7 @@ include("../layouts/topLayout.php");
                               // btnEnviar.text("Enviando"); Para button 
                               btnEnviar.val("Enviando"); // Para input de tipo button
                               btnEnviar.attr("disabled","disabled");
+                              $('#modal').modal('show');
                           },
                           complete:function(data){
                               /*
@@ -161,6 +230,10 @@ include("../layouts/topLayout.php");
                                     upArt.length = 0;
                                   }
                               });
+                              
+                              labelFile.innerText = 'Seleccione';
+                              $('#modal').modal('hide');
+                              alertCargaMasiva.style.display = 'block';
                           },
                           error: function(data){
                               /*
