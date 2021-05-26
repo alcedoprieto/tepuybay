@@ -1,5 +1,5 @@
 <?php
-    require_once (__DIR__ .'/functions.php');
+    require_once (__DIR__ .'/../functions.php');
 
     for($i = 0; $i <= 10; ++$i) {
         $pila = searchBashAdd();
