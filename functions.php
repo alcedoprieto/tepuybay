@@ -108,7 +108,7 @@ function addProduct($idLocal,$codigo,$nombre,$descripcion,$precio,$existencia,$i
     $precio      = floatvalue(trim($precio));
     $existencia  = trim($existencia);
 
-    $sql = "INSERT INTO `productos` (`id`, `codigo`, `nombre`, `descripcion`, `precio`,`existencia`, `id_woo`, `id_vendedor`, `create_at`, `update_at`) VALUES ('$idLocal', '$codigo', '$nombre', '$descripcion', '$precio','$existencia', NULL, '$id_vendedor',current_timestamp(),NULL)";
+    $sql = "INSERT INTO `productos` (`id`, `codigo`, `nombre`, `descripcion`, `precio`,`existencia`, `id_woo`, `id_vendedor`, `create_at`, `update_at`,`estado`) VALUES ('$idLocal', '$codigo', '$nombre', '$descripcion', '$precio','$existencia', NULL, '$id_vendedor',current_timestamp(),NULL,'pend_add')";
     logMessage($sql);
     if ($obj_conexion->query($sql)) {
         logMessage($obj_conexion->affected_rows);
@@ -154,7 +154,7 @@ function updateProduct($id,$codigo,$nombre,$descripcion,$precio,$existencia){
     $descripcion = $obj_conexion->real_escape_string($descripcion);
     $precio = floatvalue(trim($precio));
     $existencia = trim($existencia);
-    $sql = "UPDATE `productos` SET  `codigo` = '$codigo', `nombre` = '$nombre', `descripcion` = '$descripcion', `precio` = '$precio',`existencia` = '$existencia', `update_at` = current_timestamp() WHERE `id` = '$id'";
+    $sql = "UPDATE `productos` SET  `codigo` = '$codigo', `nombre` = '$nombre', `descripcion` = '$descripcion', `precio` = '$precio',`existencia` = '$existencia', `update_at` = current_timestamp(), `estado` = 'pend_update' WHERE `id` = '$id'";
     logMessage($sql);
     if ($obj_conexion->query($sql)) {
         $sql = "SELECT * FROM productos WHERE `id` = '$id'";
@@ -231,10 +231,18 @@ function updateId_Woo($id_woo,$idLocal,$idVendedor){
         die('Error de conexión: ' . mysqli_connect_error(). ' ' .mysqli_connect_errno() );
     }
 
-    $sql = "UPDATE `productos` SET `id_woo` = '$id_woo' WHERE `id` = '$idLocal'";
+    $sql = "UPDATE `productos` SET `id_woo` = '$id_woo', `estado` = 'syncing' WHERE `id` = '$idLocal'";
 
     if ($obj_conexion->query($sql)) {
         $id = $obj_conexion ->affected_rows;
+
+        if(!$idVendedor){
+            $sql = "SELECT id_vendedor FROM `productos` WHERE `id` = '$idLocal'";
+            $resultado = $obj_conexion->query($sql);
+            $data = $resultado->fetch_assoc();
+			$idVendedor = $data['id_vendedor'];
+        }
+
         $sql = "UPDATE `wp_posts` SET `post_author` = '$idVendedor' WHERE `wp_posts`.`ID` = '$id_woo'";
         $obj_conexion->query($sql);
         $obj_conexion->close();
@@ -300,4 +308,42 @@ function findIdWoo($codigo,$id_vendedor){
     $obj_conexion->close();
     return $id;
 
+}
+
+function searchBashAdd(){
+    $obj_conexion = mysqli_connect(SERVER, USERDB, PASSDB, DATABASE);
+    if (!$obj_conexion) {
+        die('Error de conexión: ' . mysqli_connect_error(). ' ' .mysqli_connect_errno() );
+    }
+
+    $sql = "SELECT * FROM `productos` WHERE estado = 'pend_add' LIMIT 99 ";
+    logMessage($sql);
+    $result = $obj_conexion->query($sql);
+
+    if ($result->num_rows == 0) {
+        $data = false;
+    } else {
+        $data = $result;
+    }
+    $obj_conexion->close();
+    return $data;
+}
+
+function searchBashUpdate(){
+    $obj_conexion = mysqli_connect(SERVER, USERDB, PASSDB, DATABASE);
+    if (!$obj_conexion) {
+        die('Error de conexión: ' . mysqli_connect_error(). ' ' .mysqli_connect_errno() );
+    }
+
+    $sql = "SELECT * FROM `productos` WHERE estado = 'pend_update' LIMIT 99 ";
+    logMessage($sql);
+    $result = $obj_conexion->query($sql);
+
+    if ($result->num_rows == 0) {
+        $data = false;
+    } else {
+        $data = $result;
+    }
+    $obj_conexion->close();
+    return $data;
 }
