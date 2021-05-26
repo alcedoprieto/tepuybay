@@ -46,7 +46,7 @@ function addBashProduct($pila){
 }
 
 function updateBashProduct($pila){
-    $woocommerce = new Client(URL_STORE, CK_STORE ,CS_STORE,[ 'wp_api' => true, 'version' => 'wc/v3' ]);
+    $woocommerce = new Client(URL_STORE, CK_STORE ,CS_STORE,[ 'wp_api' => true, 'version' => 'wc/v3','timeout' => 600]);
     $data = [
         'create' => [],
         'update' => $pila
