@@ -42,17 +42,20 @@ if (isset($_FILES['excel_file']) && $_FILES['excel_file']['error'] === UPLOAD_ER
             $descripPro = utf8_encode (trim($data[$i]['2']));
             $precioPro = utf8_encode (trim($data[$i]['3']));
             $existPro = utf8_encode (trim($data[$i]['4']));
+            $precio_final = $precioPro * 1.15;
+            
             if(!empty($codigoVendedor) && !empty($id_vendedor) && !empty($nombrePro) && !empty($descripPro) && is_numeric($precioPro) && is_numeric($existPro)){
                 $idLocal = findProduct($codigoVendedor,$id_vendedor);
                 logMessage($idLocal);
                 if (!empty($idLocal)){
-                    $id_woo = updateProduct($idLocal,$codigoVendedor,$nombrePro,$descripPro,$precioPro,$existPro);
+                    $id_woo = updateProduct($idLocal,$codigoVendedor,$nombrePro,$descripPro,$precioPro,$existPro,$precio_final);
                     $producto = [
                         'id' => $id_woo,
                         'name' => $nombrePro,
                         'type' => 'simple',
                         'sku'  => $idLocal,
                         'regular_price' => number_format($precioPro, 2, '.', ''),
+                        'final_price' => number_format($precio_final, 2, '.', ''),
                         'description' => $descripPro,
                         'short_description' => $codigoVendedor,
                         'manage_stock' => true,
@@ -66,13 +69,14 @@ if (isset($_FILES['excel_file']) && $_FILES['excel_file']['error'] === UPLOAD_ER
                     array_push($pilaUpdate, $producto);
                 } else {
                     $idLocal = getSKU($codigo,$id_vendedor);
-                    addProduct($idLocal,$codigoVendedor,$nombrePro,$descripPro,$precioPro,$existPro,$id_vendedor);
+                    addProduct($idLocal,$codigoVendedor,$nombrePro,$descripPro,$precioPro,$existPro,$id_vendedor,$precio_final);
 
                         $producto = [
                             'name' => $nombrePro,
                             'type' => 'simple',
                             'sku'  => $idLocal,
                             'regular_price' => number_format($precioPro, 2, '.', ''),
+                            'final_price' => number_format($precio_final, 2, '.', ''),
                             'description' => $descripPro,
                             'short_description' => $codigoVendedor,
                             'manage_stock' => true,

@@ -112,7 +112,7 @@ include("../layouts/topLayout.php");
           <h5 class="card-title display-55">Gestionar categorias</h5>
           <hr class="bg-primary" />
           <!-- Contenedor de la tabla -->
-          <div class="table-responsive">
+          <div class="table-responsive" style="overflow-x: auto;">
             <!-- Tabla -->
             <table id="artUpload" class="table table-hover table-bordered">
               <thead class="thead-dark">
@@ -121,6 +121,7 @@ include("../layouts/topLayout.php");
                   <th scope="col">Nombre</th>
                   <th scope="col">Descripcion</th>
                   <th scope="col">Precio</th>
+                  <th scope="col">Precio Final</th>
                   <th scope="col">Inventario</th>
                 </tr>
               </thead>
@@ -134,15 +135,36 @@ include("../layouts/topLayout.php");
     </div>
   </div>
 </section>
-<div class="modal fade" id="modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-	  <div class="modal-dialog modal-dialog-centered" role="document">
-	    <div class="spinner">
-		  <div class="bounce1"></div>
-		  <div class="bounce2"></div>
-		  <div class="bounce3"></div>
-		</div>
-	  </div>
-	</div>
+            <div class="modal fade" id="modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        	  <div class="modal-dialog modal-dialog-centered" role="document">
+        	    <div class="spinner">
+        		  <div class="bounce1"></div>
+        		  <div class="bounce2"></div>
+        		  <div class="bounce3"></div>
+        		</div>
+        	  </div>
+        	</div>
+        	
+        	<!-- Modal -->
+            <div class="modal fade" id="modal-info-15" tabindex="-1" data-backdrop="false" data-keyboard="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">¡Hola estas en Tepuybay!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p class="text-justify">Por lo que vemos quieres realizar el proceso de carga masiva, dicho proceso te servirá para cargar los artículos de tu inventario por primera vez y para actualizar los mismos. </p>
+                    <p class="text-justify">Tepuybay le sumará un 15% al precio final de sus artículos de manera automática , esto para cubrir los gastos operativos y tener nuestro margen de ganancia por cada venta que se haga a través de nuestra plataforma.</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Aceptar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
         </div>
     </div>
 </div>
@@ -166,6 +188,8 @@ include("../layouts/topLayout.php");
               });
               
               $(document).ready(function () {
+                  $('#modal-info-15').modal('show');
+                  
                   $("#formCargaMasiva").bind("submit",function(){
                       // Capturamnos el boton de envío
                       var btnEnviar = $("#btnEnviar");
@@ -202,7 +226,7 @@ include("../layouts/topLayout.php");
                                 pivoteAddMax = jsonRes.add.length -1;
                               }
                               $.each(jsonRes.add, function(index, value){
-                                  $("#artUpload tbody").append("<tr><th scope='row'>" + value.short_description + "</th><td>" + value.name + "</td><td>" + value.description + "</td><td>" + value.regular_price + "</td><td>" + value.stock_quantity + "</td></tr>");
+                                  $("#artUpload tbody").append("<tr><th scope='row'>" + value.short_description + "</th><td>" + value.name + "</td><td>" + value.description + "</td><td>" + value.regular_price + "</td>"+"<td>"+ value.final_price +"</td>"+"<td>" + value.stock_quantity + "</td></tr>");
                                   addArt.push(value.sku);
 
                                   //console.log(index);
@@ -220,7 +244,7 @@ include("../layouts/topLayout.php");
                                 pivoteUpMax = jsonRes.update.length -1;
                               }
                               $.each(jsonRes.update, function(index, value){
-                                $("#artUpload tbody").append("<tr><th scope='row'>" + value.short_description + "</th><td>" + value.name + "</td><td>" + value.description + "</td><td>" + value.regular_price + "</td><td>" + value.stock_quantity + "</td></tr>");
+                                $("#artUpload tbody").append("<tr><th scope='row'>" + value.short_description + "</th><td>" + value.name + "</td><td>" + value.description + "</td><td>" + value.regular_price + "</td>"+ "<td>"+ value.final_price +"</td>"+"<td>" + value.stock_quantity + "</td></tr>");
                                 upArt.push(value.sku);
                                 if(index == pivoteUp || index == pivoteUpMax){
                                     console.log("Update "+i);

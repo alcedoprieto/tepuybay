@@ -97,7 +97,7 @@ function getSKU($codigo,$id_vendedor){
     return $id;
 }
 
-function addProduct($idLocal,$codigo,$nombre,$descripcion,$precio,$existencia,$id_vendedor){
+function addProduct($idLocal,$codigo,$nombre,$descripcion,$precio,$existencia,$id_vendedor,$precio_final){
     $obj_conexion = mysqli_connect(SERVER, USERDB, PASSDB, DATABASE);
     if (!$obj_conexion) {
         die('Error de conexión: ' . mysqli_connect_error(). ' ' .mysqli_connect_errno() );
@@ -108,7 +108,7 @@ function addProduct($idLocal,$codigo,$nombre,$descripcion,$precio,$existencia,$i
     $precio      = floatvalue(trim($precio));
     $existencia  = trim($existencia);
 
-    $sql = "INSERT INTO `productos` (`id`, `codigo`, `nombre`, `descripcion`, `precio`,`existencia`, `id_woo`, `id_vendedor`, `create_at`, `update_at`,`estado`) VALUES ('$idLocal', '$codigo', '$nombre', '$descripcion', '$precio','$existencia', NULL, '$id_vendedor',current_timestamp(),NULL,'pend_add')";
+    $sql = "INSERT INTO `productos` (`id`, `codigo`, `nombre`, `descripcion`, `precio`, `precio_final`,`existencia`, `id_woo`, `id_vendedor`, `create_at`, `update_at`,`estado`) VALUES ('$idLocal', '$codigo', '$nombre', '$descripcion', '$precio', '$precio_final',$existencia', NULL, '$id_vendedor',current_timestamp(),NULL,'pend_add')";
     logMessage($sql);
     if ($obj_conexion->query($sql)) {
         logMessage($obj_conexion->affected_rows);
@@ -144,7 +144,7 @@ function findProduct($codigo,$id_vendedor){
 
 }
 
-function updateProduct($id,$codigo,$nombre,$descripcion,$precio,$existencia){
+function updateProduct($id,$codigo,$nombre,$descripcion,$precio,$existencia,$precio_final){
     $obj_conexion = mysqli_connect(SERVER, USERDB, PASSDB, DATABASE);
     if (!$obj_conexion) {
         die('Error de conexión: ' . mysqli_connect_error(). ' ' .mysqli_connect_errno() );
@@ -154,7 +154,7 @@ function updateProduct($id,$codigo,$nombre,$descripcion,$precio,$existencia){
     $descripcion = $obj_conexion->real_escape_string($descripcion);
     $precio = floatvalue(trim($precio));
     $existencia = trim($existencia);
-    $sql = "UPDATE `productos` SET  `codigo` = '$codigo', `nombre` = '$nombre', `descripcion` = '$descripcion', `precio` = '$precio',`existencia` = '$existencia', `update_at` = current_timestamp(), `estado` = 'pend_update' WHERE `id` = '$id'";
+    $sql = "UPDATE `productos` SET  `codigo` = '$codigo', `nombre` = '$nombre', `descripcion` = '$descripcion', `precio` = '$precio', `precio_final` = '$precio_final',`existencia` = '$existencia', `update_at` = current_timestamp(), `estado` = 'pend_update' WHERE `id` = '$id'";
     logMessage($sql);
     if ($obj_conexion->query($sql)) {
         $sql = "SELECT * FROM productos WHERE `id` = '$id'";
