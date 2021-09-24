@@ -108,7 +108,7 @@ function addProduct($idLocal,$codigo,$nombre,$descripcion,$precio,$existencia,$i
     $precio      = floatvalue(trim($precio));
     $existencia  = trim($existencia);
 
-    $sql = "INSERT INTO `productos` (`id`, `codigo`, `nombre`, `descripcion`, `precio`, `precio_final`,`existencia`, `id_woo`, `id_vendedor`, `create_at`, `update_at`,`estado`) VALUES ('$idLocal', '$codigo', '$nombre', '$descripcion', '$precio', '$precio_final',$existencia', NULL, '$id_vendedor',current_timestamp(),NULL,'pend_add')";
+    $sql = "INSERT INTO `productos` (`id`, `codigo`, `nombre`, `descripcion`, `precio`, `precio_final`,`existencia`, `id_woo`, `id_vendedor`, `create_at`, `update_at`,`estado`) VALUES ('$idLocal', '$codigo', '$nombre', '$descripcion', '$precio', '$precio_final','$existencia', NULL, '$id_vendedor',current_timestamp(),NULL,'pend_add')";
     logMessage($sql);
     if ($obj_conexion->query($sql)) {
         logMessage($obj_conexion->affected_rows);

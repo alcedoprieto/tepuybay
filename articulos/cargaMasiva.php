@@ -120,7 +120,6 @@ include("../layouts/topLayout.php");
                   <th scope="col">#</th>
                   <th scope="col">Nombre</th>
                   <th scope="col">Descripcion</th>
-                  <th scope="col">Precio</th>
                   <th scope="col">Precio Final</th>
                   <th scope="col">Inventario</th>
                 </tr>
@@ -226,7 +225,7 @@ include("../layouts/topLayout.php");
                                 pivoteAddMax = jsonRes.add.length -1;
                               }
                               $.each(jsonRes.add, function(index, value){
-                                  $("#artUpload tbody").append("<tr><th scope='row'>" + value.short_description + "</th><td>" + value.name + "</td><td>" + value.description + "</td><td>" + value.regular_price + "</td>"+"<td>"+ value.final_price +"</td>"+"<td>" + value.stock_quantity + "</td></tr>");
+                                  $("#artUpload tbody").append("<tr><th scope='row'>" + value.short_description + "</th><td>" + value.name + "</td><td>" + value.description + "</td>"+"<td>"+ value.final_price +"</td>"+"<td>" + value.stock_quantity + "</td></tr>");
                                   addArt.push(value.sku);
 
                                   //console.log(index);
@@ -279,8 +278,6 @@ include("../layouts/topLayout.php");
                 } else {
                   data= {"update": JSON.stringify(jsonRes)};
                 }
-                
-                    
                     /*
                     $.post( "sendCM.php", data, function( response ) {
                       console.log( response ); 
