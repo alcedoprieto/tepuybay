@@ -51,7 +51,9 @@ function updateBashProduct($pila){
         'create' => [],
         'update' => $pila
     ];
-    return $woocommerce->post('products/batch', $data);  
+    $tmp = $woocommerce->post('products/batch', $data);  
+    logMessage(json_encode($tmp));
+    return $tmp;
     /*
     if(count($pila) <= 100){
         $data = [
@@ -317,7 +319,7 @@ function searchBashAdd(){
     }
 
     $sql = "SELECT * FROM `productos` WHERE estado = 'pend_add' LIMIT 99 ";
-    logMessage($sql);
+
     $result = $obj_conexion->query($sql);
 
     if ($result->num_rows == 0) {
@@ -336,7 +338,7 @@ function searchBashUpdate(){
     }
 
     $sql = "SELECT * FROM `productos` WHERE estado = 'pend_update' LIMIT 99 ";
-    logMessage($sql);
+
     $result = $obj_conexion->query($sql);
 
     if ($result->num_rows == 0) {
