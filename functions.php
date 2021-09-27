@@ -367,3 +367,21 @@ function getListProducts($page){
     logMessage(json_encode($tmp));
     return $tmp;
 }
+
+function updateStateProduct($listId){
+    $obj_conexion = mysqli_connect(SERVER, USERDB, PASSDB, DATABASE);
+    if (!$obj_conexion) {
+        die('Error de conexión: ' . mysqli_connect_error(). ' ' .mysqli_connect_errno() );
+    }
+    
+    $sql = "UPDATE `productos` SET  `estado` = 'pend_add' WHERE id_woo NOT IN ($listId)";
+    logMessage($sql);
+    if ($obj_conexion->query($sql)) {
+        $resultado = true;
+    } else  {
+        logMessage("Error: " . $sql . "<br>" . $obj_conexion->error);
+        $resultado = false;
+    }
+    $obj_conexion->close();
+    return $resultado;
+}

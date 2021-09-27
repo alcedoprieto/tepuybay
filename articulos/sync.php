@@ -6,6 +6,11 @@
     for ($i = 0; $i <= $totalProducts; $i = $i + 99) {
         $j++;
         $list = getListProducts($j);
-        print_r($list);
-        echo PHP_EOL;
+
+        $itemsId = [];
+        foreach ($list as $item) {
+            $itemsId[] = $item->id;
+        }
+        $itemsId = implode(",", $itemsId);
+        updateStateProduct($itemsId);
     }
