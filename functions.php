@@ -353,6 +353,17 @@ function searchBashUpdate(){
 function getTotalProducts(){
     $woocommerce = new Client(URL_STORE, CK_STORE ,CS_STORE,[ 'wp_api' => true, 'version' => 'wc/v3','timeout' => 600]);
     $tmp = $woocommerce->get('reports/products/totals');  
-    logMessage($tmp);
+    logMessage(json_encode($tmp));
+    return $tmp;
+}
+
+function getListProducts($page){
+    $woocommerce = new Client(URL_STORE, CK_STORE ,CS_STORE,[ 'wp_api' => true, 'version' => 'wc/v3','timeout' => 600]);
+    $data = [
+        'page' => $page,
+        'per_page' => 99,
+    ];
+    $tmp = $woocommerce->get('products', $data);
+    logMessage(json_encode($tmp));
     return $tmp;
 }
