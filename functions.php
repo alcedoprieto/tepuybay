@@ -349,3 +349,10 @@ function searchBashUpdate(){
     $obj_conexion->close();
     return $data;
 }
+
+function getTotalProducts(){
+    $woocommerce = new Client(URL_STORE, CK_STORE ,CS_STORE,[ 'wp_api' => true, 'version' => 'wc/v3','timeout' => 600]);
+    $tmp = $woocommerce->get('reports/products/totals');  
+    logMessage($tmp);
+    return $tmp;
+}
