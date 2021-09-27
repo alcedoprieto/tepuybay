@@ -12,5 +12,6 @@
             $itemsId[] = $item->id;
         }
         $itemsId = implode(",", $itemsId);
-        updateStateProduct($itemsId);
+        $numItemsUpdate = updateStateProduct($itemsId);
+        echo "Productos devueltos a Pendientes para Agregar: $numItemsUpdate \n";
     }

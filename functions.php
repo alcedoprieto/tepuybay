@@ -377,10 +377,10 @@ function updateStateProduct($listId){
     $sql = "UPDATE `productos` SET  `estado` = 'pend_add' WHERE id_woo NOT IN ($listId)";
     logMessage($sql);
     if ($obj_conexion->query($sql)) {
-        $resultado = true;
+        $resultado = $obj_conexion->num_rows;
     } else  {
         logMessage("Error: " . $sql . "<br>" . $obj_conexion->error);
-        $resultado = false;
+        $resultado = 0;
     }
     $obj_conexion->close();
     return $resultado;
