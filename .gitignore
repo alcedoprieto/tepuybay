@@ -14,3 +14,4 @@ error_log
 articulos/uploaded_files
 *.zip
 img/
+articulos/*.log
