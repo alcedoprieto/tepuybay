@@ -374,8 +374,8 @@ function updateStateProduct($listId){
         die('Error de conexión: ' . mysqli_connect_error(). ' ' .mysqli_connect_errno() );
     }
     
-    $sql = "UPDATE `productos` SET  `estado` = 'pend_add'";
-    $obj_conexion->query($sql);
+    //$sql = "UPDATE `productos` SET  `estado` = 'pend_add'";
+    //$obj_conexion->query($sql);
     $sql = "UPDATE `productos` SET `estado` = 'syncing' WHERE id_woo IN ($listId)";
 
     logMessage($sql);
