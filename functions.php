@@ -364,7 +364,7 @@ function getListProducts($page){
         'per_page' => 99,
     ];
     $tmp = $woocommerce->get('products', $data);
-    logMessage(json_encode($tmp));
+    //logMessage(json_encode($tmp));
     return $tmp;
 }
 
@@ -379,12 +379,8 @@ function updateStateProduct($listId){
     $sql = "UPDATE `productos` SET `estado` = 'syncing' WHERE id_woo IN ($listId)";
 
     logMessage($sql);
-    if ($obj_conexion->query($sql)) {
-        $resultado = $obj_conexion->num_rows;
-    } else  {
-        logMessage("Error: " . $sql . "<br>" . $obj_conexion->error);
-        $resultado = 0;
-    }
+    $obj_conexion->query($sql);
+    $resultado = $obj_conexion->num_rows;
     $obj_conexion->close();
     return $resultado;
 }
