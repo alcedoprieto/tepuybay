@@ -14,21 +14,18 @@
 
     require_once ('../functions.php');
 
-    $pilaDelete = array();
-    $itemsId = [];
-
     if( isset($_POST['session_hash']) && $_POST['session_hash'] == $session_hash) {
         do{
+            $pilaDelete = array();
+            $itemsId = [];
+
             $sql ="SELECT id FROM `wp_posts` WHERE post_author = $user_id LIMIT 99";
 
             $result = $obj_conexion -> query($sql);
             $articulos = array();
             while($row = mysqli_fetch_array($result))
             {
-                $producto = [
-                    'id' => $row['id'],
-                ];
-                array_push($pilaDelete, $producto);
+                array_push($pilaDelete, $row['id']);
             }
             $tmp = delBashProduct($pilaDelete); 
             $arr = (array) $tmp;
