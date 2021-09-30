@@ -45,10 +45,9 @@ include("../layouts/topLayout.php");
 	                                        </tbody>
 										</table>
 	                                        <form action="delete.php" id="eliminarProductos" name="eliminarProductos"  method="POST">
-													<input type="hidden" name="session_hash" value="<?php echo $session_hash; ?>">
+												<input type="hidden" name="session_hash" value="<?php echo $session_hash; ?>">
 	                                            
-												<button type="button" class="btn btn-warning">Eliminar Articulos</button>
-												<input type="submit" class="btn btn-warning" value="eliminar">
+												<input type="submit" class="btn btn-warning" value="Eliminar Articulos">
 	                                        </form>
 	                                    
                                     </div>

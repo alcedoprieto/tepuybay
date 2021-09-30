@@ -30,8 +30,8 @@
                 ];
                 array_push($pilaDelete, $producto);
             }
-            $arr = delBashProduct($pilaDelete); 
-    
+            $tmp = delBashProduct($pilaDelete); 
+            $arr = (array) $tmp;
             for($i = 0; $i <= count($arr["delete"]); ++$i) {
                 if( !empty($arr["delete"][$i]->id) ){
                     $itemsId[] = $arr["delete"][$i]->id;
@@ -41,3 +41,4 @@
             $numItemsUpdate = deleteProduct($itemsId);
        }while(mysqli_num_rows($result));
     }
+    header('Location: list.php');
