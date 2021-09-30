@@ -28,6 +28,7 @@
             $_SESSION['user_login'] = trim($registro["user_login"]);
             $_SESSION['ID'] = $ID = trim($registro["user_id"]);
             $_SESSION['user_registered'] = trim($registro["user_registered"]);
+            $_SESSION['session_hash'] = bin2hex(random_bytes(16));
             $displayName = explode(" ",$registro["display_name"]);
             $codigo = '';
             foreach ($displayName as &$valor) {

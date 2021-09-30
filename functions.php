@@ -384,3 +384,29 @@ function updateStateProduct($listId){
     $obj_conexion->close();
     return $resultado;
 }
+
+function delBashProduct($pila){
+    $woocommerce = new Client(URL_STORE, CK_STORE ,CS_STORE,[ 'wp_api' => true, 'version' => 'wc/v3','timeout' => 600]);
+    $data = [
+        'delete' => $pila
+    ];
+    logMessage(serialize($data));
+    $tmp = $woocommerce->post('products/batch', $data);  
+    logMessage(serialize($tmp));
+    return $tmp;
+}
+
+function deleteProduct($listId){
+    $obj_conexion = mysqli_connect(SERVER, USERDB, PASSDB, DATABASE);
+    if (!$obj_conexion) {
+        die('Error de conexión: ' . mysqli_connect_error(). ' ' .mysqli_connect_errno() );
+    }
+    
+    $sql = "DELETE FROM `productos` WHERE `id_woo` IN ($listId)";
+
+    logMessage($sql);
+    $obj_conexion->query($sql);
+    $resultado = $obj_conexion->num_rows;
+    $obj_conexion->close();
+    return $resultado;
+}
