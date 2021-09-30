@@ -41,13 +41,16 @@ include("../layouts/topLayout.php");
 	                                                <th>price</th>
 	                                            </tr>
 	                                        </thead>
+											<tbody>
+	                                        </tbody>
+										</table>
 	                                        <form action="delete.php" id="eliminarProductos" name="eliminarProductos"  method="POST">
 													<input type="hidden" name="session_hash" value="<?php echo $session_hash; ?>">
-	                                            <tbody>
-	                                            </tbody>
+	                                            
 												<button type="button" class="btn btn-warning">Eliminar Articulos</button>
+												<input type="submit" class="btn btn-warning" value="eliminar">
 	                                        </form>
-	                                    </table>
+	                                    
                                     </div>
                                 </div>
                          
